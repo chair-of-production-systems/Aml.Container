@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using Aml.Contracts;
-using Aml.Engine.CAEX;
 
 namespace Aml.ViewModel
 {
 	public class CaexDocumentViewModel : CaexObjectViewModel
 	{
-		public ViewModelCollection<InstanceHierarchyViewModel> InstanceHierarchies { get; }
+		public ViewModelCollection<InstanceHierarchyViewModel> InstanceHierarchies { get; private set; }
 
-		public CaexDocumentViewModel(CAEXDocument model, ILocationResolver resolver)
-			: base(model.CAEXFile, resolver)
+		#region Ctor & Dtor
+
+		public CaexDocumentViewModel(IAmlProvider provider)
+			: base(provider)
 		{
-			InstanceHierarchies = new ViewModelCollection<InstanceHierarchyViewModel>(model.CAEXFile.InstanceHierarchy, this);
+			CaexObject = provider.CaexDocument.CAEXFile;
+			InstanceHierarchies = new ViewModelCollection<InstanceHierarchyViewModel>(provider.CaexDocument.CAEXFile.InstanceHierarchy, this);
 		}
 
+		#endregion // Ctor & Dtor
+
 		/// <inheritdoc />
-		public override IEnumerable<CaexObjectViewModel> GetChildren()
+		public override IEnumerable<CaexObjectViewModel> GetDescendants()
 		{
 			foreach (var ih in InstanceHierarchies) yield return ih;
 		}

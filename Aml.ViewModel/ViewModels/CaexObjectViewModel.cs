@@ -6,20 +6,15 @@ namespace Aml.ViewModel
 {
 	public abstract class CaexObjectViewModel
 	{
-		public CAEXBasicObject Model { get; }
+		public IAmlProvider Provider { get; }
 
-		public ILocationResolver Resolver { get; }
+		public ICAEXWrapper CaexObject { get; protected set; }
 
-		protected CaexObjectViewModel(ILocationResolver resolver)
-		{ }
-
-		protected CaexObjectViewModel(CAEXBasicObject model, ILocationResolver resolver)
+		protected CaexObjectViewModel(IAmlProvider provider)
 		{
-			Model = model;
-			Resolver = resolver;
-			ExternalInterfaceType x;
+			Provider = provider;
 		}
 
-		public abstract IEnumerable<CaexObjectViewModel> GetChildren();
+		public abstract IEnumerable<CaexObjectViewModel> GetDescendants();
 	}
 }

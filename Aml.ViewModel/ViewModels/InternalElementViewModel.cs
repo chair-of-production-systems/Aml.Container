@@ -1,21 +1,38 @@
 ﻿using System.Collections.Generic;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
+using Aml.Engine.CAEX.Extensions;
 
 namespace Aml.ViewModel
 {
 	public class InternalElementViewModel : CaexObjectViewModel
 	{
-		public ViewModelCollection<InterfaceViewModel> Interfaces { get; }
+		private readonly InternalElementType _internalElement;
 
-		public InternalElementViewModel(InternalElementType model, ILocationResolver resolver)
-			: base(model, resolver)
+		public ViewModelCollection<InterfaceViewModel> Interfaces { get; private set; }
+
+		public InternalElementViewModel(IAmlProvider provider)
+			: base(provider)
 		{
-			Interfaces = new ViewModelCollection<InterfaceViewModel>(model.ExternalInterface, this);
+			_internalElement = provider.CaexDocument.Create<InternalElementType>();
+			Initialize();
+		}
+
+		public InternalElementViewModel(InternalElementType model, IAmlProvider provider)
+			: base(provider)
+		{
+			_internalElement = model;
+			Initialize();
+		}
+
+		private void Initialize()
+		{
+			CaexObject = _internalElement;
+			Interfaces = new ViewModelCollection<InterfaceViewModel>(_internalElement.ExternalInterface, this);
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<CaexObjectViewModel> GetChildren()
+		public override IEnumerable<CaexObjectViewModel> GetDescendants()
 		{
 			foreach (var iface in Interfaces) yield return iface;
 		}

@@ -36,8 +36,8 @@ namespace Aml.ViewModel
 			}
 		}
 
-		public ExternalDataConnectorViewModel(ExternalInterfaceType model, ILocationResolver resolver)
-			: base(model, resolver)
+		public ExternalDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider)
+			: base(model, provider)
 		{
 			_interface = model;
 		}

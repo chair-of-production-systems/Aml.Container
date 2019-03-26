@@ -63,12 +63,12 @@ namespace Aml.Container
 		/// <summary>
 		/// The file extension for AML files
 		/// </summary>
-		public const string FileExtensionAml = ".aml";
+		public const string FileExtensionAml = "aml";
 
 		/// <summary>
 		/// The file extension for AMLX files
 		/// </summary>
-		public const string FileExtensionAmlx = ".amlx";
+		public const string FileExtensionAmlx = "amlx";
 
 		/// <summary>
 		/// The AutomationML standard library alias.

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Aml.Container.Exceptions;
 using Aml.Container.Files;
+using Aml.Contracts;
 using Aml.Engine.CAEX;
 
 namespace Aml.Container
@@ -14,7 +15,7 @@ namespace Aml.Container
 	/// <summary>
 	/// This class represents the main class to be used for access to an AutomationML container. 
 	/// </summary>
-	public class AmlxDocument : IDisposable, INotifyPropertyChanged
+	public class AmlxDocument : IDisposable, INotifyPropertyChanged, IAmlProvider
 	{
 		#region Consts
 
@@ -210,7 +211,10 @@ namespace Aml.Container
 
 		public static AmlxDocument Create()
 		{
-			var document = new AmlxDocument();
+			var document = new AmlxDocument
+			{
+				CaexDocument = CAEXDocument.New_CAEXDocument()
+			};
 			document.AddCaexScheme();
 			return document;
 		}
@@ -311,6 +315,26 @@ namespace Aml.Container
 			RaisePropertyChanged("Filename");
 		}
 
+		/// <summary>
+		/// Gets a <see cref="Stream"/> to read data from the specified location.
+		/// </summary>
+		/// <param name="location">The location.</param>
+		/// <returns>A <see cref="Stream"/> instance that is read-only.</returns>
+		public Stream GetStream(Uri location)
+		{
+			if (!location.IsAbsoluteUri)
+			{
+				// the uri is relative to AMLX package
+				var uri = PackUriHelper.CreatePartUri(location);
+
+				foreach (var file in Files)
+				{
+					if (PackUriHelper.ComparePartUri(file.Location, uri) == 0) return file.GetStream();
+				}
+			}
+			throw new NotImplementedException();
+		}
+
 		///// <summary>
 		///// Commits the current changes made to the document. 
 		///// </summary>
@@ -374,12 +398,13 @@ namespace Aml.Container
 
 		public void AddCaexScheme()
 		{
-			// determine filename
-			var prefix = typeof(AmlxDocument).Namespace + ".Resources";
-			Debug.Assert(prefix != null);
-			var relativePath = AmlSchemeResourceName.Substring(prefix.Length + 1);
+			// TODO: fix method
+			//// determine filename
+			//var prefix = typeof(AmlxDocument).Namespace + ".Resources";
+			//Debug.Assert(prefix != null);
+			//var relativePath = AmlSchemeResourceName.Substring(prefix.Length + 1);
 
-			_files.AddResourceFile(_package, AmlSchemeResourceName, relativePath, DocumentFileType.CaexSchemeFile);
+			//_files.AddResourceFile(_package, AmlSchemeResourceName, relativePath, DocumentFileType.CaexSchemeFile);
 		}
 
 		//public void AddStandardLibraries()
@@ -547,7 +572,7 @@ namespace Aml.Container
 		/// <returns>Relative path.</returns>
 		private static string GetNewAmlPath()
 		{
-			return "./" + Guid.NewGuid().ToString(AmlxConstants.GuidFormatFileOrDirectory) + AmlxConstants.FileExtensionAml;
+			return $"./{Guid.NewGuid().ToString(AmlxConstants.GuidFormatFileOrDirectory)}.{AmlxConstants.FileExtensionAml}";
 		}
 
 		/// <summary>
