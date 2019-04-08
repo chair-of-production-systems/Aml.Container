@@ -7,7 +7,7 @@ namespace Aml.ViewModel
 {
 	public class ExternalDataConnectorViewModel : InterfaceViewModel
 	{
-		private readonly ExternalInterfaceType _interface;
+		private ExternalInterfaceType _interface;
 
 		// TODO: move constant to a better place
 		private const string RefUriName = "refURI";
@@ -39,13 +39,19 @@ namespace Aml.ViewModel
 		public ExternalDataConnectorViewModel(IAmlProvider provider)
 			: base(provider)
 		{
-			_interface = provider.CaexDocument.Create<ExternalInterfaceType>();
+			Initialize(provider.CaexDocument.Create<ExternalInterfaceType>());
 		}
 
 		public ExternalDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider)
 			: base(model, provider)
 		{
+			Initialize(model);
+		}
+
+		private void Initialize(ExternalInterfaceType model)
+		{
 			_interface = model;
+			CaexObject = model;
 		}
 	}
 
