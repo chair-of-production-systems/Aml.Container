@@ -36,10 +36,25 @@ namespace Aml.ViewModel
 			}
 		}
 
+		public ExternalDataConnectorViewModel(IAmlProvider provider)
+			: base(provider)
+		{
+			_interface = provider.CaexDocument.Create<ExternalInterfaceType>();
+		}
+
 		public ExternalDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider)
 			: base(model, provider)
 		{
 			_interface = model;
 		}
+	}
+
+	public class StepDataConnectorViewModel : ExternalDataConnectorViewModel
+	{
+		public StepDataConnectorViewModel(IAmlProvider provider) : base(provider)
+		{ }
+
+		public StepDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider) : base(model, provider)
+		{ }
 	}
 }

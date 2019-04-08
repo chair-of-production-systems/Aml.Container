@@ -30,6 +30,7 @@ namespace Aml.ViewModel
 			{
 				new CaexViewModelFactory(),
 				new ExternalDataConnectorViewModelFactory(),
+				new StepDataConnectorViewModelFactory(),
 				new AssemblyViewModelFactory(),
 				new PartViewModelFactory()
 			};

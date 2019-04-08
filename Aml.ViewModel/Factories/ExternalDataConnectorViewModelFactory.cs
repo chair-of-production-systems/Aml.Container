@@ -37,70 +37,35 @@ namespace Aml.ViewModel
 		}
 	}
 
-	public class AssemblyViewModelFactory : ICaexViewModelFactory
+	public class StepDataConnectorViewModelFactory : ICaexViewModelFactory
 	{
 		private static Type[] _types;
 
-		public Type[] Types => _types ?? (_types = new[] { typeof(AssemblyViewModel) });
+		public Type[] Types => _types ?? (_types = new[] { typeof(StepDataConnectorViewModel) });
 
 		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(AssemblyViewModel).IsSubclassOf(type);
+		public bool CanCreate(Type type) => typeof(StepDataConnectorViewModel).IsSubclassOf(type);
 
 		/// <inheritdoc />
 		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
 		{
 			if (TypeOfViewModel(model) == null) return null;
-			var assembly = new AssemblyViewModel((InternalElementType)model, provider);
-			return assembly;
-
+			var connector = new StepDataConnectorViewModel((ExternalInterfaceType)model, provider);
+			return connector;
 		}
 
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
-			if (TypeOfViewModel(model) == null) return null;
-			var assembly = new AssemblyViewModel((InternalElementType)model, provider) as T;
-			return assembly;
+			if (TypeOfViewModel(model) == null) return default(T);
+			var connector = new StepDataConnectorViewModel((ExternalInterfaceType)model, provider) as T;
+			return connector;
 		}
 
 		/// <inheritdoc />
 		public Type TypeOfViewModel(ICAEXWrapper model)
 		{
-			if (!(model is InternalElementType ie)) return null;
-			if (ie.RefBaseSystemUnitPath.Contains("Assembly")) return typeof(AssemblyViewModel);
-			return null;
-		}
-	}
-
-	public class PartViewModelFactory : ICaexViewModelFactory
-	{
-		private static Type[] _types;
-
-		public Type[] Types => _types ?? (_types = new[] { typeof(PartViewModel) });
-
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(PartViewModel).IsSubclassOf(type);
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
-		{
-			if (TypeOfViewModel(model) == null) return null;
-			var part = new PartViewModel((InternalElementType)model, provider);
-			return part;
-
-		}
-
-		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
-		{
-			if (TypeOfViewModel(model) == null) return null;
-			var part = new PartViewModel((InternalElementType)model, provider) as T;
-			return part;
-		}
-
-		/// <inheritdoc />
-		public Type TypeOfViewModel(ICAEXWrapper model)
-		{
-			if (!(model is InternalElementType ie)) return null;
-			if (ie.RefBaseSystemUnitPath.Contains("Part")) return typeof(PartViewModel);
+			if (!(model is ExternalInterfaceType iface)) return null;
+			if (iface.RefBaseClassPath.Contains("StepInterface")) return typeof(ExternalDataConnectorViewModel);
 			return null;
 		}
 	}
