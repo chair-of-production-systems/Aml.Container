@@ -57,6 +57,12 @@ namespace Aml.ViewModel
 
 		private void AddModel(ICAEXWrapper model)
 		{
+			// skip if a view model for the model already exists
+			foreach (var vm in this)
+			{
+				if (Equals(vm.CaexObject, model)) return;
+			}
+
 			var factory = CaexViewModelFactoryManager.Instance.GetFactory<T>(model);
 			if (factory == null) return;
 
