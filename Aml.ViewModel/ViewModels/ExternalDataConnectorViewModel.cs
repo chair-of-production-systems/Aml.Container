@@ -16,21 +16,16 @@ namespace Aml.ViewModel
 		{
 			get
 			{
-				var attribute = _interface.Attribute.GetCAEXAttribute(RefUriName);
-				if (attribute == null) return null;
-				return new Uri(attribute.Value, UriKind.RelativeOrAbsolute);
+				var attribute = GetAttribute(RefUriName);
+				return attribute == null ? null : new Uri(attribute.Value, UriKind.RelativeOrAbsolute);
 			}
 			set
 			{
-				var attribute = _interface.Attribute.GetCAEXAttribute(RefUriName);
-				if (attribute == null)
-				{
-					attribute = _interface.New_Attribute(RefUriName);
-				}
+				var attribute = GetAttribute(RefUriName, true);
 
-				// TODO: strings of AttributeDataType and RefAttributeType must be defined somewhere
+				// TODO: strings of RefAttributeType must be defined somewhere
 				attribute.Name = RefUriName;
-				attribute.AttributeDataType = "xs:anyURI";
+				attribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(Uri));
 				attribute.RefAttributeType = "AutomationMLBaseAttributeTypeLib/refURI";
 				attribute.Value = value.ToString();
 			}
@@ -54,14 +49,65 @@ namespace Aml.ViewModel
 		{
 			CaexObject = _interface;
 		}
+
+		protected AttributeType GetAttribute(string name, bool create = false)
+		{
+			var attribute = _interface.Attribute.GetCAEXAttribute(name);
+			if (attribute == null && create)
+			{
+				attribute = _interface.New_Attribute(name);
+			}
+			return attribute;
+		}
 	}
 
-	public class StepDataConnectorViewModel : ExternalDataConnectorViewModel
+	/// <summary>
+	/// Defines an interface to a geometry location.
+	/// </summary>
+	public class GeometryDataConnectorViewModel : ExternalDataConnectorViewModel
 	{
-		public StepDataConnectorViewModel(IAmlProvider provider) : base(provider)
+		internal const string ColladaClassPath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface";
+		internal const string GenericGeometryClassPath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/GeometryDataConnector";
+
+		private const string MimeTypeName = "mimeType";
+
+		public string MimeType
+		{
+			get
+			{
+				var attribute = GetAttribute(MimeTypeName);
+				return attribute == null ? null : attribute.Value;
+			}
+			set
+			{
+				var attribute = GetAttribute(MimeTypeName, true);
+				attribute.Name = MimeTypeName;
+				attribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
+				attribute.Value = value;
+
+				UpdateExternalInterface(value);
+			} 
+		}
+
+		public GeometryDataConnectorViewModel(IAmlProvider provider) : base(provider)
+		{
+		}
+
+		public GeometryDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider) : base(model, provider)
 		{ }
 
-		public StepDataConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider) : base(model, provider)
-		{ }
+		private void UpdateExternalInterface(string mimeType)
+		{
+			if (mimeType == XMLMimeTypeMapper.GetMimeType(".dae"))
+			{
+				// COLLADA interface
+				((ExternalInterfaceType) CaexObject).RefBaseClassPath = ColladaClassPath;
+			}
+			else
+			{
+				// Generic class path
+				((ExternalInterfaceType)CaexObject).RefBaseClassPath = GenericGeometryClassPath;
+			}
+		}
 	}
 }

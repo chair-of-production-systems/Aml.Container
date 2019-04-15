@@ -10,18 +10,6 @@ namespace Aml.ViewModel
 
 		public Type[] Types => _types ?? (_types = new[] { typeof(PartViewModel) });
 
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(PartViewModel).IsSubclassOf(type);
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
-		{
-			if (TypeOfViewModel(model) == null) return null;
-			var part = new PartViewModel((InternalElementType)model, provider);
-			return part;
-
-		}
-
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (TypeOfViewModel(model) == null) return null;

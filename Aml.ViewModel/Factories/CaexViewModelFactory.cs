@@ -15,19 +15,6 @@ namespace Aml.ViewModel
 			typeof(ExternalInterfaceType)
 		});
 
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => type.IsSubclassOf(typeof(CaexObjectViewModel));
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
-		{
-			//if (model.GetType() == typeof(CAEXDocument)) return new CaexDocumentViewModel((CAEXDocument)model, resolver);
-			if (model.GetType() == typeof(InstanceHierarchyType)) return new InstanceHierarchyViewModel((InstanceHierarchyType)model, provider);
-			if (model.GetType() == typeof(InternalElementType)) return new InternalElementViewModel((InternalElementType)model, provider);
-			if (model.GetType() == typeof(ExternalInterfaceType)) return new InterfaceViewModel((ExternalInterfaceType)model, provider);
-			return null;
-		}
-
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (model.GetType() == typeof(InstanceHierarchyType)) return new InstanceHierarchyViewModel((InstanceHierarchyType)model, provider) as T;

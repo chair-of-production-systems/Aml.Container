@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 
@@ -9,17 +10,6 @@ namespace Aml.ViewModel
 		private static Type[] _types;
 
 		public Type[] Types => _types ?? (_types = new[] { typeof(ExternalDataConnectorViewModel) });
-
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(ExternalDataConnectorViewModel).IsSubclassOf(type);
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
-		{
-			if (TypeOfViewModel(model) == null) return null;
-			var connector = new ExternalDataConnectorViewModel((ExternalInterfaceType)model, provider);
-			return connector;
-		}
 
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
@@ -32,40 +22,37 @@ namespace Aml.ViewModel
 		public Type TypeOfViewModel(ICAEXWrapper model)
 		{
 			if (!(model is ExternalInterfaceType iface)) return null;
+			if (iface.RefBaseClassPath == null) return null;
 			if (iface.RefBaseClassPath.Contains("ExternalDataConnector")) return typeof(ExternalDataConnectorViewModel);
 			return null;
 		}
 	}
 
-	public class StepDataConnectorViewModelFactory : ICaexViewModelFactory
+	public class GeometryDataConnectorViewModelFactory : ICaexViewModelFactory
 	{
 		private static Type[] _types;
 
-		public Type[] Types => _types ?? (_types = new[] { typeof(StepDataConnectorViewModel) });
+		public virtual Type[] Types => _types ?? (_types = new[] { typeof(GeometryDataConnectorViewModel) });
 
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(StepDataConnectorViewModel).IsSubclassOf(type);
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
-		{
-			if (TypeOfViewModel(model) == null) return null;
-			var connector = new StepDataConnectorViewModel((ExternalInterfaceType)model, provider);
-			return connector;
-		}
-
-		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
+		public virtual T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (TypeOfViewModel(model) == null) return default(T);
-			var connector = new StepDataConnectorViewModel((ExternalInterfaceType)model, provider) as T;
+			var connector = new GeometryDataConnectorViewModel((ExternalInterfaceType)model, provider) as T;
 			return connector;
 		}
 
 		/// <inheritdoc />
-		public Type TypeOfViewModel(ICAEXWrapper model)
+		public virtual Type TypeOfViewModel(ICAEXWrapper model)
 		{
 			if (!(model is ExternalInterfaceType iface)) return null;
-			if (iface.RefBaseClassPath.Contains("StepInterface")) return typeof(ExternalDataConnectorViewModel);
+			if (iface.RefBaseClassPath == null) return null;
+
+			var name = GeometryDataConnectorViewModel.ColladaClassPath.Split('/').Last();
+			if (iface.RefBaseClassPath.Contains(name)) return typeof(GeometryDataConnectorViewModel);
+
+			name = GeometryDataConnectorViewModel.GenericGeometryClassPath.Split('/').Last();
+			if (iface.RefBaseClassPath.Contains(name)) return typeof(GeometryDataConnectorViewModel);
+
 			return null;
 		}
 	}

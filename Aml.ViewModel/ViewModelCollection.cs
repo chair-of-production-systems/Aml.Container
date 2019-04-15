@@ -39,7 +39,12 @@ namespace Aml.ViewModel
 
 		protected override void InsertItem(int index, T item)
 		{
-			_caexSequence.Insert(item.CaexObject);
+			var found = false;
+			foreach (var model in _caexSequence)
+			{
+				if (Equals(model, item.CaexObject)) found = true;
+			}
+			if (!found) _caexSequence.Insert(item.CaexObject);
 			base.InsertItem(index, item);
 		}
 

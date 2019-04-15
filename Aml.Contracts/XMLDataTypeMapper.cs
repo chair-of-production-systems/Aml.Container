@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
-namespace Aml.Container
+namespace Aml.Contracts
 {
 	public static class XMLDataTypeMapper
 	{
 		private static readonly Dictionary<object, string> Mappings = new Dictionary<object, string>
 		{
 			{typeof (string), "xs:string"},
-			{typeof (Byte), "xs:unsignedByte"},
-			{typeof (UInt16), "xs:unsignedShort"},
-			{typeof (UInt32), "xs:unsignedInt"},
-			{typeof (UInt64), "xs:unsignedLong"},
+			{typeof (byte), "xs:unsignedByte"},
+			{typeof (ushort), "xs:unsignedShort"},
+			{typeof (uint), "xs:unsignedInt"},
+			{typeof (ulong), "xs:unsignedLong"},
 			{typeof (bool), "xs:boolean"},
-			{typeof (Int16), "xs:short"},
-			{typeof (Int32), "xs:int"},
-			{typeof (Int64), "xs:long"},
-			{typeof (Single), "xs:float"},
-			{typeof (Double), "xs:double"},
-			{typeof (Decimal), "xs:decimal"},
+			{typeof (short), "xs:short"},
+			{typeof (int), "xs:int"},
+			{typeof (long), "xs:long"},
+			{typeof (float), "xs:float"},
+			{typeof (double), "xs:double"},
+			{typeof (decimal), "xs:decimal"},
 			{typeof (DateTime), "xs:dateTime"},
 			{typeof (TimeSpan), "xs:duration"},
 			{typeof (Color), "xs:color"},
 			{typeof (Uri), "xs:anyURI"},
-			{typeof (String[]), "xs:ENTITIES"}
+			{typeof (string[]), "xs:ENTITIES"}
 		};
 
 		public static string GetXmlDataType(object dataTypeOrValue)

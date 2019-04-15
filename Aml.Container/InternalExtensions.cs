@@ -2,6 +2,8 @@
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 
 namespace Aml.Container
 {
@@ -49,52 +51,6 @@ namespace Aml.Container
 		}
 
 		/// <summary>
-		/// Given an absolute or relative <see cref="Uri" /> with a fragment or not
-		/// this method extracts the filename including its extension.
-		/// </summary>
-		/// <param name="uri">The uri.</param>
-		/// <returns>The name of the file and its extension or null,
-		/// if the given uri does not contain any filename.</returns>
-		/// <exception cref="System.ArgumentNullException">uri</exception>
-		public static string GetFileName(this Uri uri)
-		{
-			if (uri == null) throw new ArgumentNullException(nameof(uri));
-
-			string result;
-			if (uri.IsAbsoluteUri)
-			{
-				if (uri.IsFile)
-				{
-					result = uri.LocalPath;
-				}
-				else
-				{
-					if (uri.Segments.Length > 0)
-					{
-						// in case of absolute uri (not a file), take the last segment 
-						// (a fragment will not be part of a segment so it should do the job)
-						return Path.GetFileName(uri.Segments.Last());
-					}
-					throw new UriFormatException("Unhandled Uri " + uri);
-				}
-			}
-			else
-			{
-				result = uri.OriginalString;
-			}
-
-			// case: relative uri:
-			var fragmentIndex = result.IndexOf("#", StringComparison.Ordinal);
-			if (fragmentIndex >= 0)
-			{
-				result = result.Substring(0, fragmentIndex);
-			}
-
-			result = Path.GetFileName(result);
-			return result;
-		}
-
-		/// <summary>
 		/// Gets the relative path of the specified <see cref="PackagePart"/>.
 		/// </summary>
 		/// <param name="part">The part.</param>
@@ -107,6 +63,19 @@ namespace Aml.Container
 			if (path.StartsWith("/")) path = "." + path;
 			if (!path.StartsWith("./")) path = "./" + path;
 			return path;
+		}
+
+		public static Stream GetStreamForAbsoluteUri(this Uri uri, HttpClient client)
+		{
+			if (!uri.IsAbsoluteUri) throw new Exception("Uri must be absolute");
+
+			if (uri.Scheme == Uri.UriSchemeFile)
+			{
+				return new FileStream(uri.AbsolutePath, FileMode.Open, FileAccess.Read);
+			}
+
+			var stream = client.GetStreamAsync(uri).Result;
+			return stream;
 		}
 	}
 }

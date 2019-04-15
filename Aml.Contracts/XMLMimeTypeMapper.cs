@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Mime;
+// ReSharper disable StringLiteralTypo
 
-namespace Aml.Container
+namespace Aml.Contracts
 {
 	/// <summary>
 	/// Provides a mapping between file extension and its mime type.
@@ -16,7 +18,7 @@ namespace Aml.Container
 		/// </summary> 
 		/// <remarks>According to <see><cref>ContentType.Default</cref></see>.
 		/// </remarks>
-		internal readonly static string Default = "application/octet-stream";
+		internal static readonly string Default = "application/octet-stream";
 
 		private static readonly IDictionary<string, string> Mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
 			{
@@ -197,6 +199,8 @@ namespace Aml.Container
 				{".ics", "application/octet-stream"},
 				{".idl", "text/plain"},
 				{".ief", "image/ief"},
+				{".igs", "application/iges"},
+				{".iges", "application/iges"},
 				{".iii", "application/x-iphone"},
 				{".inc", "text/plain"},
 				{".inf", "application/octet-stream"},
@@ -440,6 +444,8 @@ namespace Aml.Container
 				{".ssm", "application/streamingmedia"},
 				{".sst", "application/vnd.ms-pki.certstore"},
 				{".stl", "application/vnd.ms-pki.stl"},
+				{".stp", "application/step" },
+				{".step", "application/step" },
 				{".sv4cpio", "application/x-sv4cpio"},
 				{".sv4crc", "application/x-sv4crc"},
 				{".svc", "application/xml"},
@@ -598,8 +604,7 @@ namespace Aml.Container
 			if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(nameof(fileName));
 
 			var extension = Path.GetExtension(fileName).ToLower();
-			string mime;
-			if (Mappings.TryGetValue(extension, out mime))
+			if (Mappings.TryGetValue(extension, out var mime))
 			{
 				return mime;
 			}
@@ -629,6 +634,52 @@ namespace Aml.Container
 			if (uri == null) throw new ArgumentNullException(nameof(uri));
 			var mimeType = GetMimeType(uri);
 			return new ContentType(mimeType);
+		}
+
+		/// <summary>
+		/// Given an absolute or relative <see cref="Uri" /> with a fragment or not
+		/// this method extracts the filename including its extension.
+		/// </summary>
+		/// <param name="uri">The uri.</param>
+		/// <returns>The name of the file and its extension or null,
+		/// if the given uri does not contain any filename.</returns>
+		/// <exception cref="System.ArgumentNullException">uri</exception>
+		private static string GetFileName(this Uri uri)
+		{
+			if (uri == null) throw new ArgumentNullException(nameof(uri));
+
+			string result;
+			if (uri.IsAbsoluteUri)
+			{
+				if (uri.IsFile)
+				{
+					result = uri.LocalPath;
+				}
+				else
+				{
+					if (uri.Segments.Length > 0)
+					{
+						// in case of absolute uri (not a file), take the last segment 
+						// (a fragment will not be part of a segment so it should do the job)
+						return Path.GetFileName(uri.Segments.Last());
+					}
+					throw new UriFormatException("Unhandled Uri " + uri);
+				}
+			}
+			else
+			{
+				result = uri.OriginalString;
+			}
+
+			// case: relative uri:
+			var fragmentIndex = result.IndexOf("#", StringComparison.Ordinal);
+			if (fragmentIndex >= 0)
+			{
+				result = result.Substring(0, fragmentIndex);
+			}
+
+			result = Path.GetFileName(result);
+			return result;
 		}
 	}
 }

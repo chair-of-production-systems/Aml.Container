@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 
@@ -38,7 +39,14 @@ namespace Aml.Container
 				return File.Open(location.AbsolutePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
 			}
 
-			throw new NotImplementedException();
+			var handler = new HttpClientHandler
+			{
+				UseDefaultCredentials = true
+			};
+			using (var client = new HttpClient(handler))
+			{
+				return location.GetStreamForAbsoluteUri(client);
+			}
 		}
 	}
 }

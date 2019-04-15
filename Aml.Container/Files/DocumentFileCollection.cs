@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using Aml.Container.Exceptions;
+using Aml.Contracts;
 
 namespace Aml.Container.Files
 {

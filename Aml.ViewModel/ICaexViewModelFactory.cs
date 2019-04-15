@@ -11,22 +11,7 @@ namespace Aml.ViewModel
 		/// </summary>
 		Type[] Types { get; }
 
-		/// <summary>
-		/// Checks whether an instance of the specified type can be created or not.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		[Obsolete]
-		bool CanCreate(Type type);
-
-		/// <summary>
-		/// Creates a view model for the specified model instance.
-		/// </summary>
-		/// <param name="model">The model.</param>
-		/// <param name="provider">AutomationML provider.</param>
-		/// <returns>A view model for the specified model instance.</returns>
-		[Obsolete]
-		CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider);
+		//bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel;
 
 		T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T: CaexObjectViewModel;
 

@@ -10,16 +10,11 @@ namespace Aml.ViewModel
 
 		public Type[] Types => _types ?? (_types = new[] { typeof(AssemblyViewModel) });
 
-		/// <inheritdoc />
-		public bool CanCreate(Type type) => typeof(AssemblyViewModel).IsSubclassOf(type);
-
-		/// <inheritdoc />
-		public CaexObjectViewModel Create(ICAEXWrapper model, IAmlProvider provider)
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
 		{
-			if (TypeOfViewModel(model) == null) return null;
-			var assembly = new AssemblyViewModel((InternalElementType)model, provider);
-			return assembly;
-
+			if (!(model is InternalElementType ie)) return false;
+			if (ie.RefBaseSystemUnitPath == null) return false;
+			return ie.RefBaseSystemUnitPath.Contains("Assembly");
 		}
 
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel

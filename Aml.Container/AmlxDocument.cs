@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using Aml.Container.Exceptions;
 using Aml.Container.Files;
@@ -332,7 +333,15 @@ namespace Aml.Container
 					if (PackUriHelper.ComparePartUri(file.Location, uri) == 0) return file.GetStream();
 				}
 			}
-			throw new NotImplementedException();
+
+			var handler = new HttpClientHandler
+			{
+				UseDefaultCredentials = true
+			};
+			using (var client = new HttpClient(handler))
+			{
+				return location.GetStreamForAbsoluteUri(client);
+			}
 		}
 
 		///// <summary>

@@ -30,51 +30,10 @@ namespace Aml.ViewModel
 			{
 				new CaexViewModelFactory(),
 				new ExternalDataConnectorViewModelFactory(),
-				new StepDataConnectorViewModelFactory(),
+				new GeometryDataConnectorViewModelFactory(),
 				new AssemblyViewModelFactory(),
 				new PartViewModelFactory()
 			};
-		}
-
-		[Obsolete]
-		public IEnumerable<ICaexViewModelFactory> GetFactoriesForViewModel(Type type)
-		{
-			return _factories.Where(x => x.CanCreate(type));
-		}
-
-		[Obsolete]
-		private IEnumerable<ICaexViewModelFactory> GetFactories(ICAEXWrapper model)
-		{
-			return _factories.Where(x => x.TypeOfViewModel(model) != null);
-		}
-
-		[Obsolete]
-		public ICaexViewModelFactory GetFactory(ICAEXWrapper model)
-		{
-			var factories = GetFactories(model).ToList();
-			if (factories.Count == 0) throw new Exception("Factory missing for type " + model.GetType());
-			if (factories.Count == 1) return factories[0];
-
-			ICaexViewModelFactory match = null;
-			foreach (var factory in factories)
-			{
-				var hasSubClass = false;
-				foreach (var f in factories)
-				{
-					var thisType = factory.TypeOfViewModel(model);
-					var otherType = f.TypeOfViewModel(model);
-					if (otherType.IsSubclassOf(thisType)) hasSubClass = true;
-				}
-
-				if (!hasSubClass)
-				{
-					if (match != null) throw new Exception("Multiple factories found");
-					match = factory;
-				}
-			}
-
-			if (match == null) throw new Exception("Weird: factory missing for type " + model.GetType());
-			return match;
 		}
 
 		public ICaexViewModelFactory GetFactory<T>(ICAEXWrapper model)

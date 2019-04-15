@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using Aml.Container.Exceptions;
+using Aml.Contracts;
 
 namespace Aml.Container.Files
 {
