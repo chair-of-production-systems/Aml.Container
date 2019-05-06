@@ -23,6 +23,8 @@ namespace Aml.ViewModel
 
 		public ViewModelCollection<ExternalDataConnectorViewModel> DataConnectors { get; private set; }
 
+        public ViewModelCollection<BasePropertyViewModel> Properties { get; set; }
+
 		public PartViewModel(IAmlProvider provider)
 			: base(provider)
 		{
@@ -42,6 +44,7 @@ namespace Aml.ViewModel
 			_internalElement.RefBaseSystemUnitPath = "/Part";
 			CaexObject = _internalElement;
 			DataConnectors = new ViewModelCollection<ExternalDataConnectorViewModel>(_internalElement.ExternalInterface, this);
+		    Properties = new ViewModelCollection<BasePropertyViewModel>(_internalElement.ExternalInterface, this);
 		}
 
 		/// <inheritdoc />
