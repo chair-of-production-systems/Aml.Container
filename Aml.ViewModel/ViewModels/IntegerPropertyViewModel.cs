@@ -8,21 +8,21 @@ namespace Aml.ViewModel
 {
     public class IntegerPropertyViewModel : PropertyViewModel<int>
     {
-        private int _typedValue;
+        private int _value;
 
         public IntegerPropertyViewModel(string name, int typedValue, string unit, IAmlProvider provider) 
             : base(name, unit, provider)
         {
-            TypedValue = typedValue;
+            Value = typedValue;
             Update();
         }
 
-        public override int TypedValue
+        public override int Value
         {
-            get => _typedValue;
+            get => _value;
             set
             {
-                _typedValue = value;
+                _value = value;
                 Update();
             }
         }

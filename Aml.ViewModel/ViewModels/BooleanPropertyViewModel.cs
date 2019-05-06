@@ -4,21 +4,21 @@ namespace Aml.ViewModel
 {
     public class BooleanPropertyViewModel : PropertyViewModel<bool>
     {
-        private bool _typedValue;
+        private bool _value;
 
         public BooleanPropertyViewModel(string name, bool typedValue, string unit, IAmlProvider provider)
             : base(name, unit, provider)
         {
-            TypedValue = typedValue;
+            Value = typedValue;
             Update();
         }
 
-        public override bool TypedValue
+        public override bool Value
         {
-            get => _typedValue;
+            get => _value;
             set
             {
-                _typedValue = value;
+                _value = value;
                 Update();
             }
         }

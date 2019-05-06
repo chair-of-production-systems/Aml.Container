@@ -11,7 +11,5 @@ namespace Aml.ViewModel
         public abstract string Name { get; set; }
 
         public abstract string Unit { get; set; }
-
-        public abstract object Value { get; }
     }
 }

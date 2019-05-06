@@ -4,21 +4,21 @@ namespace Aml.ViewModel
 {
     public class DoublePropertyViewModel : PropertyViewModel<double>
     {
-        private double _typedValue;
+        private double _value;
 
         public DoublePropertyViewModel(string name, double typedValue, string unit, IAmlProvider provider)
             : base(name, unit, provider)
         {
-            TypedValue = typedValue;
+            Value = typedValue;
             Update();
         }
 
-        public override double TypedValue
+        public override double Value
         {
-            get => _typedValue;
+            get => _value;
             set
             {
-                _typedValue = value;
+                _value = value;
                 Update();
             }
         }

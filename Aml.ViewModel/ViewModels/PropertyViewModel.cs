@@ -17,19 +17,14 @@ namespace Aml.ViewModel
             _internalElement = provider.CaexDocument.Create<InternalElementType>();
             _internalElement.Name = name;
             CaexObject = _internalElement;
-            var nameAttribute = GetAttribute("Name", true);
-            nameAttribute.Value = Name;
-            nameAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
             var unitAttribute = GetAttribute("Unit", true);
-            unitAttribute.Value = Name;
+            unitAttribute.Value = Unit;
             unitAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
         }
 
         public override string Name { get; set; }
 
-        public abstract T TypedValue { get; set; }
-
-        public override object Value => TypedValue;
+        public abstract T Value { get; set; }
 
         public override string Unit { get; set; }
 
@@ -51,8 +46,8 @@ namespace Aml.ViewModel
         protected void Update()
         {
 
-            var typedValueAttribute = GetAttribute("TypedValue", true);
-            typedValueAttribute.Value = TypedValue.ToString();
+            var typedValueAttribute = GetAttribute("Value", true);
+            typedValueAttribute.Value = Value.ToString();
             typedValueAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(T));
         }
     }
