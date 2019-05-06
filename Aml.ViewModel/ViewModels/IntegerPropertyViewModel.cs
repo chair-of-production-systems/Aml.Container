@@ -26,23 +26,5 @@ namespace Aml.ViewModel
                 Update();
             }
         }
-
-        public override IEnumerable<CaexObjectViewModel> GetDescendants()
-        {
-            yield break;
-        }
-
-        private void Update()
-        {
-            var typedValueAttribute = _internalElement.Attribute.FirstOrDefault(x => x.Name.Equals(nameof(TypedValue)));
-            if (typedValueAttribute == null)
-            {
-                _internalElement.Attribute.Append(new NameObjectTuple(nameof(TypedValue), TypedValue));
-            }
-            else
-            {
-                typedValueAttribute.Value = TypedValue.ToString();
-            }
-        }
     }
 }
