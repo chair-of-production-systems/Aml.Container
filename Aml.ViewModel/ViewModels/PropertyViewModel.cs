@@ -17,9 +17,12 @@ namespace Aml.ViewModel
             _internalElement = provider.CaexDocument.Create<InternalElementType>();
             _internalElement.Name = name;
             CaexObject = _internalElement;
-            var unitAttribute = GetAttribute("Unit", true);
-            unitAttribute.Value = Unit;
-            unitAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
+            if (!string.IsNullOrEmpty(Unit))
+            {
+                var unitAttribute = GetAttribute("Unit", true);
+                unitAttribute.Value = Unit;
+                unitAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
+            }
         }
 
         public override string Name { get; set; }
