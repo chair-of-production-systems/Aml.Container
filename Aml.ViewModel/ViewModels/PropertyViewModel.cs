@@ -15,6 +15,8 @@ namespace Aml.ViewModel
             Name = name;
             Unit = unit;
             _internalElement = provider.CaexDocument.Create<InternalElementType>();
+            _internalElement.Name = name;
+            CaexObject = _internalElement;
             var nameAttribute = GetAttribute("Name", true);
             nameAttribute.Value = Name;
             nameAttribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
