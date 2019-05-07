@@ -12,9 +12,9 @@
     <ItemGroup>
         <PackageReference Include="Aml.Engine" Version="1.1.1" />
     </ItemGroup>
-
+  
     <ItemGroup>
-        <ProjectReference Include="..\Aml.Contracts\Aml.Contracts.csproj" />
+      <ProjectReference Include="..\Aml.Contracts\Aml.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

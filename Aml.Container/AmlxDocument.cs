@@ -330,7 +330,8 @@ namespace Aml.Container
 
 				foreach (var file in Files)
 				{
-					if (PackUriHelper.ComparePartUri(file.Location, uri) == 0) return file.GetStream();
+					if (location.ToString() == file.Location.ToString()) return file.GetStream();
+					//if (PackUriHelper.ComparePartUri(file.Location, uri) == 0) return file.GetStream();
 				}
 			}
 
