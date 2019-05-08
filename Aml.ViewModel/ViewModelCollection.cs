@@ -60,6 +60,10 @@ namespace Aml.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Create a view model for the specified model and add the view model to this collection.
+		/// </summary>
+		/// <param name="model"></param>
 		private void AddModel(ICAEXWrapper model)
 		{
 			// skip if a view model for the model already exists

@@ -10,9 +10,9 @@ namespace Aml.ViewModel
 
 		public Type[] Types => _types ?? (_types = new[]
 		{
-			typeof(InstanceHierarchyType),
-			typeof(InternalElementType),
-			typeof(ExternalInterfaceType)
+			typeof(InstanceHierarchyViewModel),
+			typeof(InternalElementViewModel),
+			typeof(InterfaceViewModel)
 		});
 
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
