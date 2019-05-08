@@ -6,25 +6,21 @@ using Aml.Engine.Services.Interfaces;
 
 namespace Aml.ViewModel
 {
-    public class IntegerPropertyViewModel : PropertyViewModel<int>
+    public class IntegerPropertyViewModel : BasePropertyViewModel<int>
     {
-        private int _value;
-
         public IntegerPropertyViewModel(string name, int typedValue, string unit, IAmlProvider provider) 
             : base(name, unit, provider)
         {
             Value = typedValue;
-            Update();
         }
 
-        public override int Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                Update();
-            }
-        }
-    }
+		public override int Value
+		{
+			get => int.Parse(_attribute.Value);
+			set
+			{
+				_attribute.Value = value.ToString();
+			}
+		}
+	}
 }

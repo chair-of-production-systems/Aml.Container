@@ -2,25 +2,21 @@
 
 namespace Aml.ViewModel
 {
-    public class DoublePropertyViewModel : PropertyViewModel<double>
+    public class DoublePropertyViewModel : BasePropertyViewModel<double>
     {
-        private double _value;
-
         public DoublePropertyViewModel(string name, double typedValue, string unit, IAmlProvider provider)
             : base(name, unit, provider)
         {
             Value = typedValue;
-            Update();
         }
 
-        public override double Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                Update();
-            }
-        }
-    }
+		public override double Value
+		{
+			get => double.Parse(_attribute.Value);
+			set
+			{
+				_attribute.Value = value.ToString();
+			}
+		}
+	}
 }

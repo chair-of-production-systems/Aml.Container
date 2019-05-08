@@ -1,25 +1,22 @@
 ﻿using Aml.Contracts;
+using Aml.Engine.Services.Interfaces;
 
 namespace Aml.ViewModel
 {
-    public class BooleanPropertyViewModel : PropertyViewModel<bool>
+    public class BooleanPropertyViewModel : BasePropertyViewModel<bool>
     {
-        private bool _value;
-
-        public BooleanPropertyViewModel(string name, bool typedValue, string unit, IAmlProvider provider)
+        public BooleanPropertyViewModel(string name, bool value, string unit, IAmlProvider provider)
             : base(name, unit, provider)
         {
-            Value = typedValue;
-            Update();
+            Value = value;
         }
 
         public override bool Value
         {
-            get => _value;
+            get => bool.Parse(_attribute.Value);
             set
             {
-                _value = value;
-                Update();
+                _attribute.Value = value.ToString();
             }
         }
     }

@@ -32,7 +32,8 @@ namespace Aml.ViewModel
 				new ExternalDataConnectorViewModelFactory(),
 				new GeometryDataConnectorViewModelFactory(),
 				new AssemblyViewModelFactory(),
-				new PartViewModelFactory()
+				new PartViewModelFactory(),
+				new PropertyViewModelFactory()
 			};
 		}
 
