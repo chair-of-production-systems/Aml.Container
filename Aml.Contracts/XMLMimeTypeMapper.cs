@@ -228,6 +228,7 @@ namespace Aml.Contracts
 				{".jpeg", "image/jpeg"},
 				{".jpg", "image/jpeg"},
 				{".js", "application/x-javascript"},
+				{".json", "application/json"},
 				{".jsx", "text/jscript"},
 				{".jsxbin", "text/plain"},
 				{".latex", "application/x-latex"},
