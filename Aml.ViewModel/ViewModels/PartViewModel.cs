@@ -5,7 +5,7 @@ using Aml.Engine.CAEX.Extensions;
 
 namespace Aml.ViewModel
 {
-	public class PartViewModel : CaexObjectViewModel
+	public class PartViewModel : CaexObjectViewModel, IPart
 	{
 		private readonly InternalElementType _internalElement;
 

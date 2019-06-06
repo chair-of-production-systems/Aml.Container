@@ -1,13 +1,24 @@
-﻿using Aml.Contracts;
+﻿using System;
+using Aml.Contracts;
 using Aml.Engine.CAEX;
-using Aml.Engine.CAEX.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Aml.ViewModel
 {
 	public abstract class BasePropertyViewModel<T> : BasePropertyViewModel
 	{
+		protected BasePropertyViewModel(IAmlProvider provider)
+			: base(provider)
+		{
+			AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(T));
+		}
+
+		protected BasePropertyViewModel(AttributeType model, IAmlProvider provider)
+			: base(model, provider)
+		{
+			AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(T));
+		}
+
+		[Obsolete]
 		protected BasePropertyViewModel(string name, string unit, IAmlProvider provider) 
 			: base(name, provider)
 		{
@@ -15,9 +26,10 @@ namespace Aml.ViewModel
 			AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(T));
 		}
 
+		// TODO: allow setter?
 		public string AttributeDataType
 		{
-			get { return _attribute.AttributeDataType; }
+			get => _attribute.AttributeDataType;
 			set
 			{
 				if (string.IsNullOrEmpty(value))
@@ -33,9 +45,10 @@ namespace Aml.ViewModel
 
 		public string Unit
 		{
-			get { return _attribute.Unit; }
+			get => _attribute.Unit;
 			set
 			{
+				// TODO: remove?
 				if (string.IsNullOrEmpty(value))
 				{
 					return;
