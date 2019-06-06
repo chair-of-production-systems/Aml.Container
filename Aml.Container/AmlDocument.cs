@@ -16,6 +16,14 @@ namespace Aml.Container
 		/// <summary>
 		/// Creates a new instance of the <see cref="AmlDocument"/> class.
 		/// </summary>
+		public AmlDocument()
+		{
+			CaexDocument = CAEXDocument.New_CAEXDocument(CAEXDocument.CAEXSchema.CAEX3_0);
+		}
+
+		/// <summary>
+		/// Creates a new instance of the <see cref="AmlDocument"/> class with a given <see cref="CaexDocument"/> instance.
+		/// </summary>
 		public AmlDocument(CAEXDocument document)
 		{
 			CaexDocument = document;

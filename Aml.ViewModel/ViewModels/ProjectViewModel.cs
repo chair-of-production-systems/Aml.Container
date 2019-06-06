@@ -9,9 +9,7 @@ namespace Aml.ViewModel
 	{
 		private readonly InstanceHierarchyType _instanceHierarchy;
 
-		public ViewModelCollection<AssemblyViewModel> Assemblies { get; private set; }
-
-		public ViewModelCollection<PartViewModel> Parts { get; private set; }
+		public ViewModelCollection<BaseComponent> Parts { get; private set; }
 
 		public ProjectViewModel(IAmlProvider provider)
 			: base(provider)
@@ -30,8 +28,7 @@ namespace Aml.ViewModel
 		private void Initialize()
 		{
 			CaexObject = _instanceHierarchy;
-			Assemblies = new ViewModelCollection<AssemblyViewModel>(_instanceHierarchy.InternalElement, this);
-			Parts = new ViewModelCollection<PartViewModel>(_instanceHierarchy.InternalElement, this);
+			Parts = new ViewModelCollection<BaseComponent>(_instanceHierarchy.InternalElement, this);
 		}
 
 		public override IEnumerable<CaexObjectViewModel> GetDescendants()
