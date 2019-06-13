@@ -40,6 +40,6 @@ namespace Aml.ViewModel.UnitTests
 			var doc2 = new AmlDocument(caex);
 			var ih = doc2.CaexDocument.CAEXFile.InstanceHierarchy.First;
 			var vm = new ProjectViewModel(ih, doc2);
-		}
+		} 
 	}
 }

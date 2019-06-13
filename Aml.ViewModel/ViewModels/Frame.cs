@@ -35,6 +35,5 @@ namespace Aml.ViewModel
 		{
 			yield break;
 		}
-
 	}
 }
