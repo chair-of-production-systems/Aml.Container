@@ -1,27 +1,42 @@
-﻿using Aml.Contracts;
+﻿using System.Collections.Generic;
+using Aml.Contracts;
 using Aml.Engine.CAEX;
+using Aml.Engine.CAEX.Extensions;
 
 namespace Aml.ViewModel
 {
-	public class KinematicJoint : AssemblyViewModel
+	/// <summary>
+	/// A joint connects to links
+	/// </summary>
+	public class KinematicJoint : CaexObjectViewModel
 	{
-		public ViewModelCollection<Flange> Flanges { get; private set; }
+		private readonly InternalLinkType _internalLink;
 
-		public KinematicJoint(IAmlProvider provider)
-			: base(provider)
+		public Flange ParentFlange { get; set; }
+
+		public Flange ChildFlange { get; set; }
+
+		public KinematicJoint(IAmlProvider provider) : base(provider)
 		{
+			_internalLink = provider.CaexDocument.Create<InternalLinkType>();
 			Initialize();
 		}
 
-		public KinematicJoint(InternalElementType model, IAmlProvider provider)
-			: base(model, provider)
+		protected KinematicJoint(InternalLinkType model, IAmlProvider provider)
+			: base(provider)
 		{
+			_internalLink = model;
 			Initialize();
 		}
 
 		private void Initialize()
 		{
-			Flanges = new ViewModelCollection<Flange>(_internalElement.ExternalInterface, this);
+			CaexObject = _internalLink;
+		}
+
+		public override IEnumerable<CaexObjectViewModel> GetDescendants()
+		{
+			yield break;
 		}
 	}
 }

@@ -7,9 +7,9 @@ namespace Aml.ViewModel
 {
 	public class Kinematic : BaseComponent
 	{
-		public ViewModelCollection<KinematicJoint> Joints { get; private set; }
+		public ViewModelCollection<KinematicLink> Joints { get; private set; }
 
-		public ViewModelCollection<KinematicLink> Links { get; private set; }
+		public ViewModelCollection<KinematicJoint> Links { get; private set; }
 		
 		public Kinematic(IAmlProvider provider)
 			: base(provider)
@@ -26,8 +26,8 @@ namespace Aml.ViewModel
 		private void Initialize()
 		{
 			_internalElement.RefBaseSystemUnitPath = "/Assembly/Kinematic";
-			Joints = new ViewModelCollection<KinematicJoint>(_internalElement.InternalElement, this);
-			Links = new ViewModelCollection<KinematicLink>(_internalElement.InternalLink, this);
+			Joints = new ViewModelCollection<KinematicLink>(_internalElement.InternalElement, this);
+			Links = new ViewModelCollection<KinematicJoint>(_internalElement.InternalLink, this);
 		}
 
 		/// <inheritdoc />
