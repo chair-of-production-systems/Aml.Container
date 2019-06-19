@@ -1,12 +1,24 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 using Aml.Engine.CAEX.Extensions;
 
 namespace Aml.ViewModel
 {
+	public enum FlangeType
+	{
+		Undefined,
+		Base,
+		Tcp,
+		Support
+	}
+
 	public class Flange : InterfaceViewModel
 	{
+		private const string FlangeTypePropertyName = "FlangeType";
+
 		private readonly ExternalInterfaceType _interface;
 		private FrameProperty _frame;
 		private ViewModelCollection<BasePropertyViewModel> _properties;
@@ -21,6 +33,29 @@ namespace Aml.ViewModel
 		{
 			get => _interface.ID;
 			set => _interface.ID = value;
+		}
+
+		public FlangeType Type
+		{
+			get
+			{
+				var property = _properties.OfType<StringPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == FlangeTypePropertyName);
+				if (property == null) return FlangeType.Undefined;
+				if (!Enum.TryParse(property.Value, true, out FlangeType value)) return FlangeType.Undefined;
+				return value;
+			}
+			set
+			{
+				var property = _properties.OfType<StringPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == FlangeTypePropertyName);
+				if (property == null)
+				{
+					property = new StringPropertyViewModel(Provider) { Name = FlangeTypePropertyName };
+					_properties.Add(property);
+				}
+				property.Value = value.ToString();
+			}
 		}
 
 		public FrameProperty Frame
