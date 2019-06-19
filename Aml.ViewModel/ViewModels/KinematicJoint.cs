@@ -18,7 +18,7 @@ namespace Aml.ViewModel
 	public class KinematicJoint : CaexObjectViewModel
 	{
 		private readonly InternalElementType _internalElement;
-		public ViewModelCollection<BasePropertyViewModel> _properties;
+		private ViewModelCollection<BasePropertyViewModel> _properties;
 		private FrameProperty _frame;
 
 		public KinematicLink Base { get; set; }
@@ -42,7 +42,8 @@ namespace Aml.ViewModel
 
 		public AxisType JointType { get; set; }
 
-		public KinematicJoint(IAmlProvider provider) : base(provider)
+		public KinematicJoint(IAmlProvider provider)
+			: base(provider)
 		{
 			_internalElement = provider.CaexDocument.Create<InternalElementType>();
 			Initialize();

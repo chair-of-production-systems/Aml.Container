@@ -26,7 +26,7 @@ namespace Aml.ViewModel
 		{
 			_internalElement.RefBaseSystemUnitPath = "/Assembly/Kinematic";
 			Links = new ViewModelCollection<KinematicLink>(_internalElement.InternalElement, this);
-			Joints = new ViewModelCollection<KinematicJoint>(_internalElement.InternalLink, this);
+			Joints = new ViewModelCollection<KinematicJoint>(_internalElement.InternalElement, this);
 		}
 
 		/// <inheritdoc />
