@@ -15,6 +15,18 @@ namespace Aml.ViewModel
 		private ViewModelCollection<BasePropertyViewModel> _properties;
 		private FrameProperty _frame;
 
+		public string Name
+		{
+			get => _internalElement.Name;
+			set => _internalElement.Name = value;
+		}
+
+		public string Id
+		{
+			get => _internalElement.ID;
+			set => _internalElement.ID = value;
+		}
+
 		public KinematicLink Base { get; set; }
 
 		public KinematicLink Axis { get; set; }
