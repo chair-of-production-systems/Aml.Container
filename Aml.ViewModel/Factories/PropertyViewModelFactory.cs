@@ -46,6 +46,9 @@ namespace Aml.ViewModel
 
 			if (attribute.Name == FrameProperty.PropertyName) return typeof(FrameProperty);
 
+			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
+				return typeof(KinematicJointValue);
+
 			//if (!attribute.RefAttributeType.Equals("PropertyAttribute")) return null;
 			switch (attribute.AttributeDataType)
 			{

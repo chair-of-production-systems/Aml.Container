@@ -17,7 +17,18 @@ namespace Aml.ViewModel
 		    set => _attribute.Value = Convert.ToString(value, CultureInfo.InvariantCulture);
 	    }
 
-	    public DoublePropertyViewModel(IAmlProvider provider)
+	    public double? DefaultValue
+	    {
+		    get
+		    {
+			    var value = _attribute.DefaultValue;
+			    if (value == null) return null;
+			    return double.Parse(_attribute.Value, CultureInfo.InvariantCulture);
+		    }
+		    set => _attribute.DefaultValue = Convert.ToString(value, CultureInfo.InvariantCulture);
+	    }
+
+		public DoublePropertyViewModel(IAmlProvider provider)
 			: base(provider)
 	    { }
 
