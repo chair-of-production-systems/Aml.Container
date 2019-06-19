@@ -257,7 +257,7 @@ namespace Aml.ViewModel
 			return true;
 		}
 
-		public void ComputeDhParameter(out double d, out double theta, out double alpha, out double a)
+		public void ComputeDhParameter(out double theta, out double d, out double a, out double alpha)
 		{
 			const double rad2Deg = 180d / Math.PI;
 			var matrix = ToRowMajorMatrix();
@@ -271,12 +271,14 @@ namespace Aml.ViewModel
 			alpha = Math.Acos(cosAlpha) * rad2Deg;
 		}
 
-		public void SetDhParameters(double d, double theta, double alpha, double a)
+		public void SetDhParameters(double theta, double d, double a, double alpha)
 		{
-			var ct = Math.Cos(theta);
-			var st = Math.Sin(theta);
-			var ca = Math.Cos(alpha);
-			var sa = Math.Sin(alpha);
+			const double deg2Rag = Math.PI / 180d;
+
+			var ct = Math.Cos(theta * deg2Rag);
+			var st = Math.Sin(theta * deg2Rag);
+			var ca = Math.Cos(alpha * deg2Rag);
+			var sa = Math.Sin(alpha * deg2Rag);
 
 			var matrix = new double[]
 			{

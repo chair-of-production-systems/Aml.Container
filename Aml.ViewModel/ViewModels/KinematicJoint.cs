@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 using Aml.Engine.CAEX.Extensions;
@@ -16,32 +17,54 @@ namespace Aml.ViewModel
 	/// </summary>
 	public class KinematicJoint : CaexObjectViewModel
 	{
-		private readonly InternalLinkType _internalLink;
+		private readonly InternalElementType _internalElement;
+		public ViewModelCollection<BasePropertyViewModel> _properties;
+		private FrameProperty _frame;
 
 		public KinematicLink Base { get; set; }
 
 		public KinematicLink Axis { get; set; }
 
-		public FrameProperty Transformation { get; set; }
+		public FrameProperty Frame
+		{
+			get
+			{
+				if (_frame != null) return _frame;
+				_frame = _properties.OfType<FrameProperty>().SingleOrDefault();
+				if (_frame == null)
+				{
+					_frame = new FrameProperty(Provider);
+					_internalElement.Attribute.Insert(_frame.CaexObject as AttributeType);
+				}
+				return _frame;
+			}
+		}
 
 		public AxisType JointType { get; set; }
 
 		public KinematicJoint(IAmlProvider provider) : base(provider)
 		{
-			_internalLink = provider.CaexDocument.Create<InternalLinkType>();
+			_internalElement = provider.CaexDocument.Create<InternalElementType>();
 			Initialize();
 		}
 
-		protected KinematicJoint(InternalLinkType model, IAmlProvider provider)
+		public KinematicJoint(IAmlProvider provider, double theta, double d, double a, double alpha)
+			: this(provider)
+		{
+			Frame.SetDhParameters(theta, d, a, alpha);
+		}
+
+		protected KinematicJoint(InternalElementType model, IAmlProvider provider)
 			: base(provider)
 		{
-			_internalLink = model;
+			_internalElement = model;
 			Initialize();
 		}
 
 		private void Initialize()
 		{
-			CaexObject = _internalLink;
+			CaexObject = _internalElement;
+			_properties = new ViewModelCollection<BasePropertyViewModel>(_internalElement.Attribute, this);
 		}
 
 		public override IEnumerable<CaexObjectViewModel> GetDescendants()
