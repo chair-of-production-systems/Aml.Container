@@ -271,6 +271,24 @@ namespace Aml.ViewModel
 			alpha = Math.Acos(cosAlpha) * rad2Deg;
 		}
 
+		public void SetDhParameters(double d, double theta, double alpha, double a)
+		{
+			var ct = Math.Cos(theta);
+			var st = Math.Sin(theta);
+			var ca = Math.Cos(alpha);
+			var sa = Math.Sin(alpha);
+
+			var matrix = new double[]
+			{
+				ct, -st*ca, st*sa, a*ct,
+				st, ct*ca, -ct*sa, a*st,
+				0, sa, ca, d,
+				0, 0, 0, 1
+			};
+
+			SetFromRowMajorMatrix(matrix);
+		}
+
 		#endregion // Public API
 
 		private double GetProperty(DoublePropertyViewModel property)

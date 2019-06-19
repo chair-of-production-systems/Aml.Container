@@ -5,6 +5,12 @@ using Aml.Engine.CAEX.Extensions;
 
 namespace Aml.ViewModel
 {
+	public enum AxisType
+	{
+		Prismatic,
+		Revolution
+	}
+
 	/// <summary>
 	/// A joint connects to links
 	/// </summary>
@@ -12,9 +18,13 @@ namespace Aml.ViewModel
 	{
 		private readonly InternalLinkType _internalLink;
 
-		public Flange ParentFlange { get; set; }
+		public KinematicLink Base { get; set; }
 
-		public Flange ChildFlange { get; set; }
+		public KinematicLink Axis { get; set; }
+
+		public FrameProperty Transformation { get; set; }
+
+		public AxisType JointType { get; set; }
 
 		public KinematicJoint(IAmlProvider provider) : base(provider)
 		{
