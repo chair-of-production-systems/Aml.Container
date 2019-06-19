@@ -11,6 +11,8 @@ namespace Aml.ViewModel
 	/// </summary>
 	public class KinematicJoint : CaexObjectViewModel
 	{
+		private const string AxisValuePropertyName = "AxisValue";
+
 		private readonly InternalElementType _internalElement;
 		private ViewModelCollection<BasePropertyViewModel> _properties;
 		private FrameProperty _frame;
@@ -30,6 +32,27 @@ namespace Aml.ViewModel
 		public KinematicLink Base { get; set; }
 
 		public KinematicLink Axis { get; set; }
+
+		public string AxisValue
+		{
+			get
+			{
+				var property = _properties.OfType<StringPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == AxisValuePropertyName);
+				return property?.Value;
+			}
+			set
+			{
+				var property = _properties.OfType<StringPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == AxisValuePropertyName);
+				if (property == null)
+				{
+					property = new StringPropertyViewModel(Provider) { Name = AxisValuePropertyName };
+					_properties.Add(property);
+				}
+				property.Value = value;
+			}
+		}
 
 		public FrameProperty Frame
 		{
