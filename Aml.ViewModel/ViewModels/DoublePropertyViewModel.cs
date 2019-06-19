@@ -23,7 +23,7 @@ namespace Aml.ViewModel
 		    {
 			    var value = _attribute.DefaultValue;
 			    if (value == null) return null;
-			    return double.Parse(_attribute.Value, CultureInfo.InvariantCulture);
+			    return double.Parse(value, CultureInfo.InvariantCulture);
 		    }
 		    set => _attribute.DefaultValue = Convert.ToString(value, CultureInfo.InvariantCulture);
 	    }
