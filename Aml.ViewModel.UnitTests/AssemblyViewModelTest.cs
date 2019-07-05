@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Aml.ViewModel.UnitTests
 {
-	public class UnitTest1
+	public class AssemblyViewModelTest
 	{
 		[Fact]
 		public void Test1()

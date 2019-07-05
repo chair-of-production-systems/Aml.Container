@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 using Aml.Engine.CAEX.Extensions;
@@ -39,16 +38,14 @@ namespace Aml.ViewModel
 		{
 			get
 			{
-				var property = _properties.OfType<StringPropertyViewModel>()
-					.FirstOrDefault(x => x.Name == FlangeTypePropertyName);
+				var property = _properties.OfType<StringPropertyViewModel>().FirstOrDefault(x => x.Name == FlangeTypePropertyName);
 				if (property == null) return FlangeType.Undefined;
 				if (!Enum.TryParse(property.Value, true, out FlangeType value)) return FlangeType.Undefined;
 				return value;
 			}
 			set
 			{
-				var property = _properties.OfType<StringPropertyViewModel>()
-					.FirstOrDefault(x => x.Name == FlangeTypePropertyName);
+				var property = _properties.OfType<StringPropertyViewModel>().FirstOrDefault(x => x.Name == FlangeTypePropertyName);
 				if (property == null)
 				{
 					property = new StringPropertyViewModel(Provider) { Name = FlangeTypePropertyName };

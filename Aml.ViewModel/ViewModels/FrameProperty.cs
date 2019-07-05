@@ -264,11 +264,15 @@ namespace Aml.ViewModel
 
 			// from https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters#Denavit%E2%80%93Hartenberg_matrix
 			var cosTheta = matrix[0];
-			var cosAlpha = matrix[5] / cosTheta;
+			var sinTheta = matrix[4];
+			var cosAlpha = matrix[10];
+			var sinAlpha = matrix[9];
 			d = matrix[11];
-			a = matrix[3] / cosTheta;
+			a = (Math.Abs(cosTheta) > 0.5) ? matrix[3] / cosTheta : matrix[7] / sinTheta;
 			theta = Math.Acos(cosTheta) * rad2Deg;
 			alpha = Math.Acos(cosAlpha) * rad2Deg;
+			if (sinTheta < 0) theta = -theta;
+			if (sinAlpha < 0) alpha = -alpha;
 		}
 
 		public void SetDhParameters(double theta, double d, double a, double alpha)
