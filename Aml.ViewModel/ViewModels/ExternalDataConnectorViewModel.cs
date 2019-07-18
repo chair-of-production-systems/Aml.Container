@@ -31,6 +31,8 @@ namespace Aml.ViewModel
 			}
 		}
 
+		public ViewModelCollection<BasePropertyViewModel> Properties { get; set; }
+
 		public ExternalDataConnectorViewModel(IAmlProvider provider)
 			: base(provider)
 		{
@@ -48,6 +50,7 @@ namespace Aml.ViewModel
 		private void Initialize()
 		{
 			CaexObject = _interface;
+			Properties = new ViewModelCollection<BasePropertyViewModel>(_interface.Attribute, this);
 		}
 
 		protected AttributeType GetAttribute(string name, bool create = false)
