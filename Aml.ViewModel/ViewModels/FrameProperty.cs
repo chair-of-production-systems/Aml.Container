@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
 
@@ -28,38 +29,38 @@ namespace Aml.ViewModel
 
 		public double X
 		{
-			get => GetProperty(_xProperty);
-			set => SetProperty(ref _xProperty, value);
+			get => GetProperty(ref _xProperty, nameof(X));
+			set => SetProperty(ref _xProperty, nameof(X), value);
 		}
 
 		public double Y
 		{
-			get => GetProperty(_yProperty);
-			set => SetProperty(ref _yProperty, value);
+			get => GetProperty(ref _yProperty, nameof(Y));
+			set => SetProperty(ref _yProperty, nameof(Y), value);
 		}
 
 		public double Z
 		{
-			get => GetProperty(_zProperty);
-			set => SetProperty(ref _zProperty, value);
+			get => GetProperty(ref _zProperty, nameof(Z));
+			set => SetProperty(ref _zProperty, nameof(Z), value);
 		}
 
 		public double RX
 		{
-			get => GetProperty(_rxProperty);
-			set => SetProperty(ref _rxProperty, value);
+			get => GetProperty(ref _rxProperty, nameof(RX));
+			set => SetProperty(ref _rxProperty, nameof(RX), value);
 		}
 
 		public double RY
 		{
-			get => GetProperty(_ryProperty);
-			set => SetProperty(ref _ryProperty, value);
+			get => GetProperty(ref _ryProperty, nameof(RY));
+			set => SetProperty(ref _ryProperty, nameof(RY), value);
 		}
 
 		public double RZ
 		{
-			get => GetProperty(_rzProperty);
-			set => SetProperty(ref _rzProperty, value);
+			get => GetProperty(ref _rzProperty, nameof(RZ));
+			set => SetProperty(ref _rzProperty, nameof(RZ), value);
 		}
 
 		#endregion // Properties
@@ -297,15 +298,29 @@ namespace Aml.ViewModel
 
 		#endregion // Public API
 
-		private double GetProperty(DoublePropertyViewModel property)
+		private double GetProperty(ref DoublePropertyViewModel property, string name)
 		{
+			FindPropertyInstance(ref property, name);
 			return property?.Value ?? default(double);
 		}
 
-		private void SetProperty(ref DoublePropertyViewModel property, double value)
+		private void SetProperty(ref DoublePropertyViewModel property, string name, double value)
 		{
-			if (property == null) property = new DoublePropertyViewModel(Provider);
+			FindPropertyInstance(ref property, name);
+			if (property == null)
+			{
+				property = new DoublePropertyViewModel(Provider) { Name = name, Id = null };
+				_attribute.Attribute.Insert(property.CaexObject as AttributeType);
+			}
 			property.Value = value;
+		}
+
+		private void FindPropertyInstance(ref DoublePropertyViewModel property, string name)
+		{
+			if (property != null) return;
+
+			var attribute = _attribute.Attribute.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase));
+			if (attribute != null) property = new DoublePropertyViewModel(attribute, Provider);
 		}
 	}
 }
