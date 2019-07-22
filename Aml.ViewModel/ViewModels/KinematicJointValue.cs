@@ -12,6 +12,7 @@ namespace Aml.ViewModel
 		#region Consts
 
 		internal const string AttributeRefTypeName = "Kinematik/JointValue";
+		private const string LimitConstraintName = "JointLimits";
 		private const double Epsilon = 1e-6;
 
 		#endregion // Consts
@@ -27,12 +28,6 @@ namespace Aml.ViewModel
 			set
 			{
 				var requirement = _attribute.Constraint.FirstOrDefault(x => x.OrdinalScaledType != null);
-				if (requirement == null)
-				{
-					requirement = Provider.CaexDocument.Create<AttributeValueRequirementType>();
-					requirement.New_OrdinalType();
-					_attribute.Constraint.Insert(requirement);
-				}
 				requirement.OrdinalScaledType.RequiredMinValue = Convert.ToString(value, CultureInfo.InvariantCulture);
 			}
 		}
@@ -48,12 +43,6 @@ namespace Aml.ViewModel
 			set
 			{
 				var requirement = _attribute.Constraint.FirstOrDefault(x => x.OrdinalScaledType != null);
-				if (requirement == null)
-				{
-					requirement = Provider.CaexDocument.Create<AttributeValueRequirementType>();
-					requirement.New_OrdinalType();
-					_attribute.Constraint.Insert(requirement);
-				}
 				requirement.OrdinalScaledType.RequiredMaxValue = Convert.ToString(value, CultureInfo.InvariantCulture);
 			}
 		}
@@ -61,11 +50,23 @@ namespace Aml.ViewModel
 		public KinematicJointValue(IAmlProvider provider) : base(provider)
 		{
 			_attribute.RefAttributeType = AttributeRefTypeName;
+			SetDefaultLimits();
 		}
 
 		public KinematicJointValue(AttributeType model, IAmlProvider provider) : base(model, provider)
 		{
 			_attribute.RefAttributeType = AttributeRefTypeName;
+			SetDefaultLimits();
+		}
+
+		private void SetDefaultLimits()
+		{
+			var requirement = Provider.CaexDocument.Create<AttributeValueRequirementType>();
+			requirement.New_OrdinalType();
+			requirement.Name = LimitConstraintName;
+			requirement.OrdinalScaledType.RequiredMaxValue = (DefaultValue ?? 0d).ToString();
+			requirement.OrdinalScaledType.RequiredMinValue = (DefaultValue ?? 0d).ToString();
+			_attribute.Constraint.Insert(requirement);
 		}
 	}
 }
