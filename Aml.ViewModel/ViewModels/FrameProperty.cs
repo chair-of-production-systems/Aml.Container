@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Aml.Contracts;
 using Aml.Engine.CAEX;
@@ -73,7 +74,8 @@ namespace Aml.ViewModel
 			Initialize();
 		}
 
-		public FrameProperty(AttributeType model, IAmlProvider provider) : base(model, provider)
+		public FrameProperty(AttributeType model, IAmlProvider provider) 
+			: base(model, provider)
 		{
 			Initialize();
 		}
@@ -81,6 +83,31 @@ namespace Aml.ViewModel
 		private void Initialize()
 		{
 			Name = PropertyName;
+
+			foreach (var attribute in _attribute.Attribute)
+			{
+				switch (attribute.Name)
+				{
+					case nameof(X):
+						X = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+					case nameof(Y):
+						Y = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+					case nameof(Z):
+						Z = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+					case nameof(RX):
+						RX = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+					case nameof(RY):
+						RY = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+					case nameof(RZ):
+						RZ = double.Parse(attribute.Value, CultureInfo.InvariantCulture);
+						break;
+				}
+			}
 		}
 
 		#endregion // Ctor & Dtor
@@ -321,6 +348,23 @@ namespace Aml.ViewModel
 
 			var attribute = _attribute.Attribute.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase));
 			if (attribute != null) property = new DoublePropertyViewModel(attribute, Provider);
+		}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as Frame);
+		}
+
+		public bool Equals(FrameProperty other)
+		{
+			if (other == null) return false;
+
+			return Math.Abs(X - other.X) < Epsilon
+			    && Math.Abs(Y - other.Y) < Epsilon
+			    && Math.Abs(Z - other.Z) < Epsilon
+			    && Math.Abs(RX - other.RX) < Epsilon
+			    && Math.Abs(RY - other.RY) < Epsilon
+			    && Math.Abs(RZ - other.RZ) < Epsilon;
 		}
 	}
 }

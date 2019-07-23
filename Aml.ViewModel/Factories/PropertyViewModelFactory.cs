@@ -13,6 +13,27 @@ namespace Aml.ViewModel
 			typeof(BasePropertyViewModel)
 		});
 
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
+		{
+			if (!(model is AttributeType attribute)) return false;
+
+			if (attribute.Name == FrameProperty.PropertyName) return true;
+
+			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
+				return true;
+
+			switch (attribute.AttributeDataType)
+			{
+				case XMLDataTypeMapper.StringTypeName:
+				case XMLDataTypeMapper.BooleanTypeName:
+				case XMLDataTypeMapper.IntTypeName:
+				case XMLDataTypeMapper.DoubleTypeName:
+					return true;
+				default:
+					return false;
+			}
+		}
+
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			var t = TypeOfViewModel(model);
@@ -31,7 +52,6 @@ namespace Aml.ViewModel
 			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
 				return typeof(KinematicJointValue);
 
-			//if (!attribute.RefAttributeType.Equals("PropertyAttribute")) return null;
 			switch (attribute.AttributeDataType)
 			{
 				case XMLDataTypeMapper.StringTypeName: return typeof(StringPropertyViewModel);

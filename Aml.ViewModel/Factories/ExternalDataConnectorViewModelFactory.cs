@@ -11,6 +11,14 @@ namespace Aml.ViewModel
 
 		public Type[] Types => _types ?? (_types = new[] { typeof(ExternalDataConnectorViewModel) });
 
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
+		{
+			if (!(model is ExternalInterfaceType iface)) return false;
+			if (iface.RefBaseClassPath == null) return false;
+			if (iface.RefBaseClassPath.Contains("ExternalDataConnector")) return true;
+			return false;
+		}
+
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (TypeOfViewModel(model) == null) return default(T);
@@ -33,6 +41,20 @@ namespace Aml.ViewModel
 		private static Type[] _types;
 
 		public virtual Type[] Types => _types ?? (_types = new[] { typeof(GeometryDataConnectorViewModel) });
+
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
+		{
+			if (!(model is ExternalInterfaceType iface)) return false;
+			if (iface.RefBaseClassPath == null) return false;
+
+			var name = GeometryDataConnectorViewModel.ColladaClassPath.Split('/').Last();
+			if (iface.RefBaseClassPath.Contains(name)) return true;
+
+			name = GeometryDataConnectorViewModel.GenericGeometryClassPath.Split('/').Last();
+			if (iface.RefBaseClassPath.Contains(name)) return true;
+
+			return false;
+		}
 
 		public virtual T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{

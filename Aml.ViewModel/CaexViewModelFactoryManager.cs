@@ -33,17 +33,18 @@ namespace Aml.ViewModel
 				new GeometryDataConnectorViewModelFactory(),
 				new AssemblyViewModelFactory(),
 				new PartViewModelFactory(),
-				new PropertyViewModelFactory()
+				new PropertyViewModelFactory(),
+				new KinematicFactory()
 			};
 		}
 
-		public ICaexViewModelFactory GetFactory<T>(ICAEXWrapper model)
+		public ICaexViewModelFactory GetFactory<T>(ICAEXWrapper model) where T : CaexObjectViewModel
 		{
 			var factories = new List<ICaexViewModelFactory>();
 			foreach (var factory in _factories)
 			{
 				// only factories that can create the destination type
-				var canCreateDestinationType = factory.Types.Any(type => typeof(T).IsAssignableFrom(type));
+				var canCreateDestinationType = factory.CanCreate<T>(model);
 				if (!canCreateDestinationType) continue;
 				
 				// only factories that can handle the given CAEX object

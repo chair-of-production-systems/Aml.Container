@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Xml.Serialization;
 using Aml.Engine.CAEX;
 
 namespace Aml.ViewModel
@@ -76,8 +77,41 @@ namespace Aml.ViewModel
 			if (factory == null) return;
 
 			var viewModel = factory.Create<T>(model, _parent.Provider);
-			if (viewModel == null) throw new Exception("Cannot create view model");
+
+			// if the needed viewmodel could not be created, just dont add it the collection
+			if (viewModel == null) return;
 			Add(viewModel);
+		}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as ViewModelCollection<T>);
+		}
+
+		public bool Equals(ViewModelCollection<T> other)
+		{
+			if (other == null) return false;
+			if (Count != other.Count) return false;
+			var otherIndices = new int[Count].Select(x => x = -1).ToArray();
+
+			for (int thisIndex = 0; thisIndex < Count; thisIndex++)
+			{
+				for (int otherIndex = 0; otherIndex < Count; otherIndex++)
+				{
+					if (otherIndices.Contains(otherIndex)) continue;
+					if (this.ElementAt(thisIndex).Equals(other.ElementAt(otherIndex)))
+					{
+						otherIndices[thisIndex] = otherIndex;
+						break;
+					}
+				}
+
+				if (otherIndices[thisIndex] == -1)
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Aml.ViewModel
 	{
 		#region Consts
 
-		internal const string AttributeRefTypeName = "Kinematik/JointValue";
+		internal const string AttributeRefTypeName = "/Kinematik/JointValue";
 		private const string LimitConstraintName = "JointLimits";
 		private const double Epsilon = 1e-6;
 
@@ -67,6 +67,24 @@ namespace Aml.ViewModel
 			requirement.OrdinalScaledType.RequiredMaxValue = (DefaultValue ?? 0d).ToString();
 			requirement.OrdinalScaledType.RequiredMinValue = (DefaultValue ?? 0d).ToString();
 			_attribute.Constraint.Insert(requirement);
+		}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as KinematicJointValue);
+		}
+
+		public bool Equals(KinematicJointValue other)
+		{
+			if (other == null) return false;
+
+			return (_attribute?.RefAttributeType?.Equals(other._attribute?.RefAttributeType) ?? false)
+			       && (Name?.Equals(other.Name) ?? false)
+			       && (Id?.Equals(other.Id) ?? false)
+				   && Math.Abs(Value - other.Value) < Epsilon
+			       && Math.Abs(DefaultValue ?? 0d - other.DefaultValue ?? 0d) < Epsilon
+			       && Math.Abs(Minimum - other.Minimum) < Epsilon
+			       && Math.Abs(Maximum - other.Maximum) < Epsilon;
 		}
 	}
 }

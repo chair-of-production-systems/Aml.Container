@@ -19,14 +19,15 @@ namespace Aml.ViewModel
 		}
 
 		public Kinematic(InternalElementType model, IAmlProvider provider)
-			: base(provider)
+			: base(model, provider)
 		{
 			Initialize();
+			//AddElements(model);
 		}
 
 		private void Initialize()
 		{
-			_internalElement.RefBaseSystemUnitPath = "/Assembly/Kinematic";
+			_internalElement.RefBaseSystemUnitPath = "/Kinematic";
 			Links = new ViewModelCollection<KinematicLink>(_internalElement.InternalElement, this);
 			Joints = new ViewModelCollection<KinematicJoint>(_internalElement.InternalElement, this);
 			JointValues = new ViewModelCollection<KinematicJointValue>(_internalElement.Attribute, this);
@@ -36,6 +37,51 @@ namespace Aml.ViewModel
 		public override IEnumerable<CaexObjectViewModel> GetDescendants()
 		{
 			yield break;
+		}
+
+		//private void AddElements(InternalElementType model)
+		//{
+		//	var factory = new KinematicFactory();
+		//	foreach (var attribute in model.Attribute)
+		//	{
+		//		var jointValue = factory.Create<KinematicJointValue>(attribute, Provider);
+		//		if (jointValue != null)
+		//		{
+		//			JointValues.Add(jointValue);
+		//		}
+		//	}
+
+		//	foreach (var internalElement in model.InternalElement)
+		//	{
+		//		var joint = factory.Create<KinematicJoint>(internalElement, Provider);
+		//		if (joint != null)
+		//		{
+		//			Joints.Add(joint);
+		//		}
+
+		//		var link = factory.Create<KinematicLink>(internalElement, Provider);
+		//		if (link != null)
+		//		{
+		//			Links.Add(link);
+		//		}
+		//	}
+		//}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as Kinematic);
+		}
+
+		public bool Equals(Kinematic other)
+		{
+			if (other == null) return false;
+
+			return (_internalElement?.RefBaseSystemUnitPath?.Equals(other._internalElement?.RefBaseSystemUnitPath) ?? false)
+				   && (Name?.Equals(other.Name) ?? false)
+			       && (Id?.Equals(other.Id) ?? false)
+			       && (Links?.Equals(other.Links) ?? false)
+				   && (JointValues?.Equals(other.JointValues) ?? false)
+				   && (Joints?.Equals(other.Joints) ?? false);
 		}
 	}
 }

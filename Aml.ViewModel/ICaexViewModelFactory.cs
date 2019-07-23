@@ -11,7 +11,7 @@ namespace Aml.ViewModel
 		/// </summary>
 		Type[] Types { get; }
 
-		//bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel;
+		bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel;
 
 		T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T: CaexObjectViewModel;
 

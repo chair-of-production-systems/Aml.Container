@@ -15,6 +15,18 @@ namespace Aml.ViewModel
 			typeof(InterfaceViewModel)
 		});
 
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
+		{
+			if (model == null) return false;
+
+			return (model.GetType() == typeof(InstanceHierarchyViewModel) &&
+						typeof(InstanceHierarchyViewModel).IsAssignableFrom(typeof(T)))
+			       || (model.GetType() == typeof(InternalElementViewModel) &&
+			           typeof(InternalElementViewModel).IsAssignableFrom(typeof(T)))
+				   || (model.GetType() == typeof(InterfaceViewModel) &&
+				       typeof(InterfaceViewModel).IsAssignableFrom(typeof(T)));
+		}
+
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (model.GetType() == typeof(InstanceHierarchyType)) return new InstanceHierarchyViewModel((InstanceHierarchyType)model, provider) as T;
@@ -25,7 +37,6 @@ namespace Aml.ViewModel
 
 		public Type TypeOfViewModel(ICAEXWrapper model)
 		{
-			//if (model.GetType() == typeof(CAEXDocument)) return typeof(CaexDocumentViewModel);
 			if (model.GetType() == typeof(InstanceHierarchyType)) return typeof(InstanceHierarchyViewModel);
 			if (model.GetType() == typeof(InternalElementType)) return typeof(InternalElementViewModel);
 			if (model.GetType() == typeof(ExternalInterfaceType)) return typeof(InterfaceViewModel);

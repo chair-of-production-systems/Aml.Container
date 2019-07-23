@@ -85,8 +85,25 @@ namespace Aml.ViewModel
 
 		private void Initialize()
 		{
+			_interface.RefBaseClassPath = "/Kinematic/Link/Flange";
 			CaexObject = _interface;
 			_properties = new ViewModelCollection<BasePropertyViewModel>(_interface.Attribute, this);
+		}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as Flange);
+		}
+
+		public bool Equals(Flange other)
+		{
+			if (other == null) return false;
+
+			return (_interface?.RefBaseClassPath?.Equals(other._interface?.RefBaseClassPath) ?? false)
+			       && (Name?.Equals(other.Name) ?? false)
+			       && (Id?.Equals(other.Id) ?? false)
+			       && ((Frame == null && other.Frame == null) || (Frame?.Equals(other.Frame) ?? false))
+			       && Type == other.Type;
 		}
 	}
 }

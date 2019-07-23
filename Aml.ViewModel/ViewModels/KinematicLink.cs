@@ -21,7 +21,24 @@ namespace Aml.ViewModel
 
 		private void Initialize()
 		{
+			_internalElement.RefBaseSystemUnitPath = "/Kinematic/Link";
 			Flanges = new ViewModelCollection<Flange>(_internalElement.ExternalInterface, this);
+		}
+
+		public override bool Equals(object other)
+		{
+			return Equals(other as KinematicLink);
+		}
+
+		public bool Equals(KinematicLink other)
+		{
+			if (other == null) return false;
+
+			return (_internalElement?.RefBaseSystemUnitPath?.Equals(other._internalElement?.RefBaseSystemUnitPath) ??
+			        false)
+			       && (Name?.Equals(other.Name) ?? false)
+			       && (Id?.Equals(other.Id) ?? false)
+			       && (Flanges?.Equals(other.Flanges) ?? false);
 		}
 	}
 }

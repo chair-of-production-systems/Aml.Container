@@ -10,6 +10,13 @@ namespace Aml.ViewModel
 
 		public Type[] Types => _types ?? (_types = new[] { typeof(PartViewModel) });
 
+		public bool CanCreate<T>(ICAEXWrapper model) where T : CaexObjectViewModel
+		{
+			if (!(model is InternalElementType ie)) return false;
+			if (ie.RefBaseSystemUnitPath.Contains("Part")) return true;
+			return false;
+		}
+
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
 		{
 			if (TypeOfViewModel(model) == null) return null;
