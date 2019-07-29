@@ -12,9 +12,13 @@ namespace Aml.View
 	{
 		protected CaexObjectViewModel _viewModel;
 
+		public abstract string MimeType { get; }
+
 		protected BaseView(CaexObjectViewModel viewModel)
 		{
 			_viewModel = viewModel;
 		}
+
+		public abstract Stream Export();
 	}
 }
