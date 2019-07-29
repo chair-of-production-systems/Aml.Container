@@ -21,11 +21,11 @@ namespace Aml.ViewModel
 				switch (internalElement.RefBaseSystemUnitPath)
 				{
 					case "/Kinematic":
-						return typeof(Kinematic).IsAssignableFrom(typeof(T));
+						return typeof(T).IsAssignableFrom(typeof(Kinematic));
 					case "/Kinematic/Joint":
-						return typeof(KinematicJoint).IsAssignableFrom(typeof(T));
+						return typeof(T).IsAssignableFrom(typeof(KinematicJoint));
 					case "/Kinematic/Link":
-						return typeof(KinematicLink).IsAssignableFrom(typeof(T));
+						return typeof(T).IsAssignableFrom(typeof(KinematicLink));
 				}
 			}
 
@@ -34,7 +34,7 @@ namespace Aml.ViewModel
 				switch (externalInterface.RefBaseClassPath)
 				{
 					case "/Kinematic/Link/Flange":
-						return typeof(Flange).IsAssignableFrom(typeof(T));
+						return typeof(T).IsAssignableFrom(typeof(Flange));
 				}
 			}
 			return false;

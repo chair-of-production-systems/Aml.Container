@@ -2,6 +2,7 @@
 using Aml.Engine.CAEX;
 using System;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace Aml.ViewModel.UnitTests
@@ -81,10 +82,10 @@ namespace Aml.ViewModel.UnitTests
 
 				var instanceHierachy = project.CaexObject as InstanceHierarchyType;
 
-				var factory = CaexViewModelFactoryManager.Instance.GetFactory<Kinematic>(instanceHierachy.InternalElement.First);
-				var kinematicViewModel = factory.Create<Kinematic>(instanceHierachy.InternalElement.First, doc);
+				var project2 = new ProjectViewModel(instanceHierachy, doc);
+				var robot2 = project2.Parts.OfType<Kinematic>().Single();
 
-				Assert.Equal(robot, kinematicViewModel);
+				Assert.Equal(robot, robot2);
 			}
 		}
 	}

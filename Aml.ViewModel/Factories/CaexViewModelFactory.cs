@@ -20,11 +20,11 @@ namespace Aml.ViewModel
 			if (model == null) return false;
 
 			return (model.GetType() == typeof(InstanceHierarchyViewModel) &&
-						typeof(InstanceHierarchyViewModel).IsAssignableFrom(typeof(T)))
+						typeof(T).IsAssignableFrom(typeof(InstanceHierarchyViewModel)))
 			       || (model.GetType() == typeof(InternalElementViewModel) &&
-			           typeof(InternalElementViewModel).IsAssignableFrom(typeof(T)))
+			           typeof(T).IsAssignableFrom(typeof(InternalElementViewModel)))
 				   || (model.GetType() == typeof(InterfaceViewModel) &&
-				       typeof(InterfaceViewModel).IsAssignableFrom(typeof(T)));
+				       typeof(T).IsAssignableFrom(typeof(InterfaceViewModel)));
 		}
 
 		public T Create<T>(ICAEXWrapper model, IAmlProvider provider) where T : CaexObjectViewModel
