@@ -68,7 +68,23 @@ namespace Aml.ViewModel
 				}
 				return _frame;
 			}
+			set
+			{
+				var property = _properties.OfType<FrameProperty>().SingleOrDefault();
+				if (property == null)
+				{
+					_frame = value;
+					_interface.Attribute.Insert(_frame.CaexObject as AttributeType);
+				}
+				else
+				{
+					_interface.Attribute.RemoveElement(_frame.CaexObject as AttributeType);
+					_frame = value;
+					_interface.Attribute.Insert(_frame.CaexObject as AttributeType);
+				}
+			}
 		}
+
 		public Flange(IAmlProvider provider)
 			: base(provider)
 		{

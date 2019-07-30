@@ -78,13 +78,28 @@ namespace Aml.ViewModel
 		{
 			if (other == null) return false;
 
-			return (_attribute?.RefAttributeType?.Equals(other._attribute?.RefAttributeType) ?? false)
-			       && (Name?.Equals(other.Name) ?? false)
-			       && (Id?.Equals(other.Id) ?? false)
-				   && Math.Abs(Value - other.Value) < Epsilon
-			       && Math.Abs(DefaultValue ?? 0d - other.DefaultValue ?? 0d) < Epsilon
-			       && Math.Abs(Minimum - other.Minimum) < Epsilon
-			       && Math.Abs(Maximum - other.Maximum) < Epsilon;
+			if (!(_attribute?.RefAttributeType?.Equals(other._attribute?.RefAttributeType) ?? false))
+				return false;
+
+			if (!(Name?.Equals(other.Name) ?? false))
+				return false;
+
+			if (!(Id?.Equals(other.Id) ?? false))
+				return false;
+
+			if (!(Math.Abs(Value - other.Value) < Epsilon))
+				return false;
+
+			if (!(Math.Abs((DefaultValue ?? 0d) - (other.DefaultValue ?? 0d)) < Epsilon))
+				return false;
+
+			if (!(Math.Abs(Minimum - other.Minimum) < Epsilon))
+				return false;
+
+			if (!(Math.Abs(Maximum - other.Maximum) < Epsilon))
+				return false;
+
+			return true;
 		}
 	}
 }

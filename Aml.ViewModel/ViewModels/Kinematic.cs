@@ -76,12 +76,26 @@ namespace Aml.ViewModel
 		{
 			if (other == null) return false;
 
-			return (_internalElement?.RefBaseSystemUnitPath?.Equals(other._internalElement?.RefBaseSystemUnitPath) ?? false)
-				   && (Name?.Equals(other.Name) ?? false)
-			       && (Id?.Equals(other.Id) ?? false)
-			       && (Links?.Equals(other.Links) ?? false)
-				   && (JointValues?.Equals(other.JointValues) ?? false)
-				   && (Joints?.Equals(other.Joints) ?? false);
+			if (!(_internalElement?.RefBaseSystemUnitPath?.Equals(other._internalElement?.RefBaseSystemUnitPath) ??
+			      false))
+				return false;
+
+			if (!(Name?.Equals(other.Name) ?? false))
+				return false;
+
+			if (!(Id?.Equals(other.Id) ?? false))
+				return false;
+
+			if (!(Links?.Equals(other.Links) ?? false))
+				return false;
+
+			if (!(JointValues?.Equals(other.JointValues) ?? false))
+				return false;
+
+			if (!(Joints?.Equals(other.Joints) ?? false))
+				return false;
+
+			return true;
 		}
 	}
 }

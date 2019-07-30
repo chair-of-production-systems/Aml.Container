@@ -38,6 +38,21 @@ namespace Aml.ViewModel
 				}
 				return _frame;
 			}
+			set
+			{
+				var property = Properties.OfType<FrameProperty>().SingleOrDefault();
+				if (property == null)
+				{
+					_frame = value;
+					_internalElement.Attribute.Insert(_frame.CaexObject as AttributeType);
+				}
+				else
+				{
+					_internalElement.Attribute.RemoveElement(_frame.CaexObject as AttributeType);
+					_frame = value;
+					_internalElement.Attribute.Insert(_frame.CaexObject as AttributeType);
+				}
+			}
 		}
 
 		protected BaseComponent(IAmlProvider provider) : base(provider)
