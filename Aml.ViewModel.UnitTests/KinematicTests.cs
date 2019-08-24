@@ -276,9 +276,9 @@ namespace Aml.ViewModel.UnitTests
 
 				project.Parts.Add(robot);
 
-				var instanceHierachy = project.CaexObject as InstanceHierarchyType;
+				var instanceHierarchy = project.CaexObject as InstanceHierarchyType;
 
-				var project2 = new ProjectViewModel(instanceHierachy, doc);
+				var project2 = new ProjectViewModel(instanceHierarchy, doc);
 				var robot2 = project2.Parts.OfType<Kinematic>().Single();
 
 				Assert.Equal(robot, robot2);

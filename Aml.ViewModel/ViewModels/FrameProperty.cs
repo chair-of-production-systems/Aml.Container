@@ -10,7 +10,7 @@ namespace Aml.ViewModel
 	{
 		#region Consts
 
-		internal const string RefAttributeType = "/Kinematic/Frame";
+		internal const string AttributeName = "Frame";
 		private const double Epsilon = 1e-6;
 
 		#endregion // Consts
@@ -82,7 +82,7 @@ namespace Aml.ViewModel
 
 		private void Initialize()
 		{
-			_attribute.RefAttributeType = RefAttributeType;
+			_attribute.Name = AttributeName;
 
 			foreach (var attribute in _attribute.Attribute)
 			{

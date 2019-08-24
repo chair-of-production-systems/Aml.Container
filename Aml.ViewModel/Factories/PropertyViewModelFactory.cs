@@ -17,7 +17,7 @@ namespace Aml.ViewModel
 		{
 			if (!(model is AttributeType attribute)) return false;
 
-			if (attribute.RefAttributeType == FrameProperty.RefAttributeType) return true;
+			if (attribute.Name == FrameProperty.AttributeName) return true;
 
 			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
 				return true;
@@ -47,8 +47,10 @@ namespace Aml.ViewModel
 		{
 			if (!(model is AttributeType attribute)) return null;
 
-			if (attribute.RefAttributeType == FrameProperty.RefAttributeType) return typeof(FrameProperty);
+			// attributes with special name
+			if (attribute.Name == FrameProperty.AttributeName) return typeof(FrameProperty);
 
+			// attribute with special reference attribute type
 			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
 				return typeof(KinematicJointValue);
 
