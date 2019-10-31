@@ -19,6 +19,8 @@ namespace Aml.ViewModel
 
 			if (attribute.Name == FrameProperty.AttributeName) return true;
 
+			if (attribute.Name == CouplingPropertyViewModel.AttributeName) return true;
+
 			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)
 				return true;
 
@@ -49,6 +51,8 @@ namespace Aml.ViewModel
 
 			// attributes with special name
 			if (attribute.Name == FrameProperty.AttributeName) return typeof(FrameProperty);
+
+			if (attribute.Name == CouplingPropertyViewModel.AttributeName) return typeof(CouplingPropertyViewModel);
 
 			// attribute with special reference attribute type
 			if (attribute.RefAttributeType == KinematicJointValue.AttributeRefTypeName)

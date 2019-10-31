@@ -17,6 +17,7 @@ namespace Aml.ViewModel
 		private const string BasePropertyName = "Base";
 		private const string FrameAttributeName = "Frame";
 		private const string JointTypeAttributeName = "JointType";
+		private const string CouplingAttributeName = "Coupling";
 
 		private readonly InternalElementType _internalElement;
 		private ViewModelCollection<BasePropertyViewModel> _properties;
@@ -112,6 +113,27 @@ namespace Aml.ViewModel
 			}
 		}
 
+		public CouplingPropertyViewModel Coupling
+		{
+			get
+			{
+				var property = _properties.OfType<CouplingPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == CouplingAttributeName);
+				return property;
+			}
+			set
+			{
+				var property = _properties.OfType<CouplingPropertyViewModel>()
+					.FirstOrDefault(x => x.Name == CouplingAttributeName);
+				if (property == null)
+				{
+					property = new CouplingPropertyViewModel(Provider);
+					_properties.Add(property);
+				}
+				property.CopyValues(value);
+			}
+		}
+
 		public KinematicAxisType JointType
 		{
 			get
@@ -183,7 +205,8 @@ namespace Aml.ViewModel
 			       && (Axis?.Equals(other.Axis) ?? false)
 			       && (AxisValue?.Equals(other.AxisValue) ?? false)
 			       && (Frame?.Equals(other.Frame) ?? false)
-			       && JointType == other.JointType;
+			       && JointType == other.JointType
+				   && (Coupling == null ? other.Coupling == null : Coupling.Equals(other.Coupling));
 		}
 	}
 }

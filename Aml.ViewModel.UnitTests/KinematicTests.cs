@@ -210,16 +210,26 @@ namespace Aml.ViewModel.UnitTests
 					Base = link0.Id,
 					Axis = link1.Id,
 					JointType = KinematicAxisType.Revolution,
-					AxisValue = $"{j1.Id}"
-				};
+					AxisValue = $"{j1.Id}",
+					Coupling = new CouplingPropertyViewModel(doc)
+					{
+						Active = true
+					}
+			};
 				var joint2 = new KinematicJoint(doc, 0, 125, 0, -90)
 				{
 					Name = "Joint2",
 					Base = link1.Id,
 					Axis = link2.Id,
 					JointType = KinematicAxisType.Revolution,
-					AxisValue = $"{j2.Id}"
-				};
+					AxisValue = $"{j2.Id}",
+					Coupling = new CouplingPropertyViewModel(doc)
+					{
+						Active = false,
+						Parent = joint1.Id,
+						Ratio = -0.5
+					}
+			};
 				var joint3 = new KinematicJoint(doc, -90, 0, 270, 0)
 				{
 					Name = "Joint3",
