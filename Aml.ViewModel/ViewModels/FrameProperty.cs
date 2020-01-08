@@ -194,75 +194,85 @@ namespace Aml.ViewModel
 			return matrix;
 		}
 
-		public void SetFromRowMajorMatrix(double[] matrix, double scale = 1.0)
-		{
-			// | matrix[ 0]  matrix[ 1]  matrix[ 2]  matrix[ 3] |
-			// | matrix[ 4]  matrix[ 5]  matrix[ 6]  matrix[ 7] |
-			// | matrix[ 8]  matrix[ 9]  matrix[10]  matrix[11] |
-			// | matrix[12]  matrix[13]  matrix[14]  matrix[15] |
+        public void SetFromRowMajorMatrix(double[] matrix, double scale = 1.0)
+        {
+            // | matrix[ 0]  matrix[ 1]  matrix[ 2]  matrix[ 3] |
+            // | matrix[ 4]  matrix[ 5]  matrix[ 6]  matrix[ 7] |
+            // | matrix[ 8]  matrix[ 9]  matrix[10]  matrix[11] |
+            // | matrix[12]  matrix[13]  matrix[14]  matrix[15] |
 
-			var r11 = matrix[0];
-			var r12 = matrix[1];
-			var r21 = matrix[4];
-			var r22 = matrix[5];
-			var r31 = matrix[8];
-			var r32 = matrix[9];
-			var r33 = matrix[10];
+            var r11 = matrix[0];
+            var r12 = matrix[1];
+            var r21 = matrix[4];
+            var r22 = matrix[5];
+            var r31 = matrix[8];
+            var r32 = matrix[9];
+            var r33 = matrix[10];
 
-			double rotX, rotZ;
-			var rotY = Math.Atan2(-r31, Math.Sqrt(r11 * r11 + r21 * r21));
-			if (rotY + Epsilon > Math.PI / 2)
-			{
-				// WARNING. Not a unique solution.
-				//rotY = Math.PI / 2;
-				//rotZ = 0;
-				//rotX = Math.Atan2(matrix[1], matrix[5]);
-				rotX = Math.Atan2(r12, r22);
-				rotY = Math.PI / 2;
-				rotZ = 0;
-			}
-			else if (rotY - Epsilon < -Math.PI / 2)
-			{
-				// WARNING. Not a unique solution.
-				//rotY = -Math.PI / 2;
-				//rotZ = 0;
-				//rotX = -Math.Atan2(matrix[1], matrix[5]);
-				rotX = -Math.Atan2(r12, r22);
-				rotY = -Math.PI / 2;
-				rotZ = 0;
-			}
-			else
-			{
-				//var cosY = Math.Cos(rotY);
-				//rotZ = Math.Atan2(matrix[1] / cosY, matrix[0] / cosY);
-				//rotX = Math.Atan2(matrix[9] / cosY, matrix[10] / cosY);
-				rotX = Math.Atan2(r32, r33);
-				rotZ = Math.Atan2(r21, r11);
-			}
+            double rotX, rotZ;
+            var rotY = Math.Atan2(-r31, Math.Sqrt(r11 * r11 + r21 * r21));
+            if (rotY + Epsilon > Math.PI / 2)
+            {
+                // WARNING. Not a unique solution.
+                //rotY = Math.PI / 2;
+                //rotZ = 0;
+                //rotX = Math.Atan2(matrix[1], matrix[5]);
+                rotX = Math.Atan2(r12, r22);
+                rotY = Math.PI / 2;
+                rotZ = 0;
+            }
+            else if (rotY - Epsilon < -Math.PI / 2)
+            {
+                // WARNING. Not a unique solution.
+                //rotY = -Math.PI / 2;
+                //rotZ = 0;
+                //rotX = -Math.Atan2(matrix[1], matrix[5]);
+                rotX = -Math.Atan2(r12, r22);
+                rotY = -Math.PI / 2;
+                rotZ = 0;
+            }
+            else
+            {
+                //var cosY = Math.Cos(rotY);
+                //rotZ = Math.Atan2(matrix[1] / cosY, matrix[0] / cosY);
+                //rotX = Math.Atan2(matrix[9] / cosY, matrix[10] / cosY);
+                rotX = Math.Atan2(r32, r33);
+                rotZ = Math.Atan2(r21, r11);
+            }
 
-			var x = scale * matrix[3];
-			var y = scale * matrix[7];
-			var z = scale * matrix[11];
-			var rx = rotX / Math.PI * 180d;
-			var ry = rotY / Math.PI * 180d;
-			var rz = rotZ / Math.PI * 180d;
+            var x = scale * matrix[3];
+            var y = scale * matrix[7];
+            var z = scale * matrix[11];
+            var rx = rotX / Math.PI * 180d;
+            var ry = rotY / Math.PI * 180d;
+            var rz = rotZ / Math.PI * 180d;
 
-			if (Math.Abs(x) < Epsilon) { x = 0; }
-			if (Math.Abs(y) < Epsilon) { y = 0; }
-			if (Math.Abs(z) < Epsilon) { z = 0; }
-			if (Math.Abs(rx) < Epsilon) { rx = 0; }
-			if (Math.Abs(ry) < Epsilon) { ry = 0; }
-			if (Math.Abs(rz) < Epsilon) { rz = 0; }
+            if (Math.Abs(x) < Epsilon) { x = 0; }
+            if (Math.Abs(y) < Epsilon) { y = 0; }
+            if (Math.Abs(z) < Epsilon) { z = 0; }
+            if (Math.Abs(rx) < Epsilon) { rx = 0; }
+            if (Math.Abs(ry) < Epsilon) { ry = 0; }
+            if (Math.Abs(rz) < Epsilon) { rz = 0; }
 
-			X = x;
-			Y = y;
-			Z = z;
-			RX = rx;
-			RY = ry;
-			RZ = rz;
-		}
+            X = x;
+            Y = y;
+            Z = z;
+            RX = rx;
+            RY = ry;
+            RZ = rz;
+        }
 
-		public void SetFromColumnMajorMatrix(double[] matrix, double scale = 1.0)
+        public void SetFromRowMajorMatrix2(double x, double y, double z, double rx, double ry, double rz)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            RX = rx;
+            RY = ry;
+            RZ = rz;
+        }
+
+        public void SetFromColumnMajorMatrix(double[] matrix, double scale = 1.0)
 		{
 			var m = new[]
 			{
@@ -323,9 +333,14 @@ namespace Aml.ViewModel
 			SetFromRowMajorMatrix(matrix);
 		}
 
-		#endregion // Public API
 
-		private double GetProperty(ref DoublePropertyViewModel property, string name)
+        public void SetXYZParameters(double X, double Y, double Z, double RX, double RY, double RZ)
+        {
+            SetFromRowMajorMatrix2(X, Y, Z, RX, RY, RZ);
+        }
+        #endregion // Public API
+
+        private double GetProperty(ref DoublePropertyViewModel property, string name)
 		{
 			FindPropertyInstance(ref property, name);
 			return property?.Value ?? default(double);

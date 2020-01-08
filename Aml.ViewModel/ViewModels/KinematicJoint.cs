@@ -168,7 +168,13 @@ namespace Aml.ViewModel
 			Frame.SetDhParameters(theta, d, a, alpha);
 		}
 
-		public KinematicJoint(InternalElementType model, IAmlProvider provider)
+        public KinematicJoint(IAmlProvider provider, double X, double Y, double Z, double RX, double RY, double RZ)
+    : this(provider)
+        {
+            Frame.SetXYZParameters(X, Y, Z, RX, RY, RZ);
+        }
+
+        public KinematicJoint(InternalElementType model, IAmlProvider provider)
 			: base(provider)
 		{
 			_internalElement = model;
