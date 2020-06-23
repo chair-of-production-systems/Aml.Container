@@ -31,6 +31,7 @@ namespace Aml.ViewModel
 				new CaexViewModelFactory(),
 				new ExternalDataConnectorViewModelFactory(),
 				new GeometryDataConnectorViewModelFactory(),
+				new ExternalGeometryConnectorViewModelFactory(),
 				new AssemblyViewModelFactory(),
 				new PartViewModelFactory(),
 				new PropertyViewModelFactory(),

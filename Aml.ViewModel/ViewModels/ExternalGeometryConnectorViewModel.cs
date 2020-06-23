@@ -9,16 +9,52 @@ namespace Aml.ViewModel.ViewModels
 		internal const string ColladaClassPath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterfaceUrl";
 		internal const string GenericGeometryClassPath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/ExternalGeometryConnector";
 
+		private const string FileNameName = "fileName";
+		private const string FileIdName = "fileId";
 		private const string MimeTypeName = "mimeType";
 
-		public ExternalGeometryConnectorViewModel(IAmlProvider provider, string url) : base(provider)
+		public ExternalGeometryConnectorViewModel(IAmlProvider provider) : base(provider)
 		{
-			Location = new Uri(url, UriKind.RelativeOrAbsolute);
 		}
 
-		public ExternalGeometryConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider, string url) : base(model, provider)
+		public ExternalGeometryConnectorViewModel(ExternalInterfaceType model, IAmlProvider provider) : base(model, provider)
 		{
-			Location = new Uri(url, UriKind.RelativeOrAbsolute);
+		}
+
+		public string FileId
+		{
+			get
+			{
+				var attribute = GetAttribute(FileIdName);
+				return attribute == null ? null : attribute.Value;
+			}
+			set
+			{
+				var attribute = GetAttribute(FileIdName, true);
+				attribute.Name = FileIdName;
+				attribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
+				attribute.Value = value;
+
+				UpdateExternalInterface(value);
+			}
+		}
+
+		public string FileName
+		{
+			get
+			{
+				var attribute = GetAttribute(FileNameName);
+				return attribute == null ? null : attribute.Value;
+			}
+			set
+			{
+				var attribute = GetAttribute(FileNameName, true);
+				attribute.Name = FileNameName;
+				attribute.AttributeDataType = XMLDataTypeMapper.GetXmlDataType(typeof(string));
+				attribute.Value = value;
+
+				UpdateExternalInterface(value);
+			}
 		}
 
 		public string MimeType
